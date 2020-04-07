@@ -8,7 +8,7 @@
   <name>wmpay Maven Webapp</name>
   <url>http://maven.apache.org</url>
   <dependencies>
-    <!-- spring(web)MVC spring -->
+    <!-- spring(web)MVC spring  -->
 		<!-- https://mvnrepository.com/artifact/org.springframework/spring-webmvc -->
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -179,5 +179,15 @@
   </dependencies>
   <build>
     <finalName>wmpay</finalName>
+	  <plugins>
+		  <plugin>
+			  <groupId>org.apache.maven.plugins</groupId>
+			  <artifactId>maven-compiler-plugin</artifactId>
+			  <configuration>
+				  <source>7</source>
+				  <target>7</target>
+			  </configuration>
+		  </plugin>
+	  </plugins>
   </build>
 </project>

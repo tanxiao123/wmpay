@@ -1,5 +1,14 @@
+var dataTable, aDataSet;
 
-
+/**
+ * 表格初始化事件
+ * @param url 请求地址
+ * @param columns 字段列
+ * @param len 每页显示多少条
+ * @param index 从第几页开始
+ * @param columnDefs 需要格式化的字段列
+ * @returns
+ */
 function initMainTable(url, columns, len, index, columnDefs) {
 	var iDisplayLength = 20; // 默认显示条数
 	var pStart = 0; // 默认开始条数
@@ -40,14 +49,12 @@ function initMainTable(url, columns, len, index, columnDefs) {
 		sAjaxSource: url, // 请求URL地址
 		columnDefs: columnDefs, // 自定义操作列
 		fnInfoCallback: function (oSettings, iStart, iEnd, iMax, iTotal, sPre) {
-			console.log(sPre);
 			return sPre;
 		},
 		fnServerData: function (sSource, aoData, fnCallback) {
 			var sendData = {};
 
 			for (var i = 0; i < aoData.length; i++) {
-				console.log(aoData[i]);
 				var aName = aoData[i].name;
 				var nValue = aoData[i].value;
 
@@ -64,19 +71,41 @@ function initMainTable(url, columns, len, index, columnDefs) {
 				var page_start = tableSetings._iDisplayStart;// 当前页开始
 				var page = (page_start / paging_length); // 得到页数值 比页码小1
 				sendData.start = page + 1
-				console.log(page);
 			}
 			$.ajax({
 				url: sSource,
 				type: 'GET',
 				data: sendData,
 				success: function (data) {
-					//if (data.status == 1){
 						aDataSet = data.data;
-					//}
 					fnCallback(data);
 				}
 			});
+		}
+	})
+}
+
+/**
+ * 根据操作栏ID进行操作
+ * @param idName
+ * @param callback
+ * @returns
+ */
+function tableCick(idName,callback) {
+	$("#dataTable tbody").on('click',idName, function (){
+		var data = $("#dataTable").DataTable().row($(this).parent()).data(); 
+		callback(data, $(this).parent());
+	})
+}
+
+function sendPost(url,data,callBack) {
+	$.ajax({
+		url: url,
+		type: 'POST',
+		dataType: 'json',
+		data: data,
+		success: function (result){
+			callBack(result);
 		}
 	});
 }

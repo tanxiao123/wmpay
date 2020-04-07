@@ -77,9 +77,8 @@
 	<script type="text/javascript"
 		src="${ pageContext.request.contextPath }/static/business/js/common.js"></script>
 	
-	
 	<script type="text/javascript">
-		var dataTable, aDataSet;
+		
 
 		$(function(){
 			// 初始化表格信息
@@ -90,43 +89,58 @@
 				{data: 'createdTime',  sClass: 'center'},
 				{data: 'updatedTime',  sClass: 'center'}
 			];
+			
 			var columnDefs = [
 				{
+					targets: [2],
+					render: function(data, type, row) {
+						switch(row.status){
+							case '1':
+								return "正常";
+							case '2':
+								return "禁用";
+						}
+					}
+				},
+				{
 					targets: [5],
-					data: 'name',
 					render: function() {
 						return `
-							<a title="编辑" href="javascript:;"   class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6df;</i></a>
-							<a title="删除" href="javascript:;"  class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6e2;</i></a>
-						`
+							<a title="编辑" href="javascript:;"  id="editPermission"  class="ml-5 " style="text-decoration:none"><i class="Hui-iconfont">&#xe6df;</i></a>
+							<a title="删除" href="javascript:;"  id="delPermission" class="ml-5 " style="text-decoration:none"><i class="Hui-iconfont">&#xe6e2;</i></a>
+						`;
 					}
 				}
 			];
+			
+			// 初始化表格数据
 			initMainTable("permissionList.do",columns,20,1,columnDefs);
-
-			// 注册点击事件
-			$("#dataTable tbody").on('click', 'tr td:nth-child(6)',function (e){
-				console.log(e)
-				alert('点击事件触发');
+			
+			// 编辑权限
+			tableCick('#editPermission',function(data){
+				var index = layer.open({
+					type: 2,
+					title: '编辑权限',
+					content: "editPermissionView.do?id="+data.wmAuthGroupId
+				});
+				layer.full(index);
+				console.log(data);
 			});
-		});
 
-
-
-		/**
-		 *
-		 * @param dealType 9:删除 1:新增 2:修改
-		 * @param obj
-		 * @param butEnName
-		 */
-		// function dealData(dealType, obj, butEnName) {
-		// 	// 获取当前Table行号
-		// 	var row = ($(obj).parents("tr").prevAll().length);
-		// 	// 获取主键
-		// 	var id = aDataSet.data[row].id;
-		// 	console.log(aDataSet);
-		// 	console.log(id);
-		// }
+			// 删除权限
+			tableCick('#delPermission',function(data,rows){
+				var index = layer.confirm('是否要删除此权限?', function (){					
+					sendPost('delPermission.do?wmAuthGroupId='+data.wmAuthGroupId,{}, function(result){
+						layer.msg(result.cusMsg);
+						if (result.status == 1){
+							rows.parent().remove();
+						}
+					});
+					layer.close(index);
+				});
+				console.log(data);
+			});
+		})
 	</script>
 </body>
 

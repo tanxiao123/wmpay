@@ -13,15 +13,18 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.weimai.tools.ResponseBean;
 import com.wmpay.bean.WmAdmin;
 import com.wmpay.bean.WmAuthGroup;
+import com.wmpay.bean.WmAuthGroupAccess;
 import com.wmpay.common.AdminCommon;
 import com.wmpay.common.PageTools;
 import com.wmpay.service.WmAdminService;
+import com.wmpay.service.WmAuthGroupAccessService;
 import com.wmpay.service.WmAuthGroupService;
 
 @Controller
@@ -34,6 +37,9 @@ public class SystemController {
 	
 	@Autowired
 	WmAuthGroupService wmAuthGroupService;
+	
+	@Autowired
+	WmAuthGroupAccessService wmAuthGroupAccessService;
 	
 	/**
 	 *  登陆
@@ -78,9 +84,10 @@ public class SystemController {
 	 * @param response
 	 * @return
 	 */
+	
 	@RequestMapping(value = "permission")
 	public String redirectAuth(HttpServletRequest request, HttpServletResponse response) {
-		return "/admin/permission";
+		return "/admin/permission/index";
 	}
 	
 	/**
@@ -118,6 +125,7 @@ public class SystemController {
 	 * @param result
 	 * @return
 	 */
+	@ResponseBody
 	@RequestMapping(value = "addPermission", method = RequestMethod.POST)
 	public ResponseBean addPermission(@Valid WmAuthGroup wmAuthGroup, BindingResult result) {
 		ResponseBean responseBean = new ResponseBean();
@@ -137,6 +145,43 @@ public class SystemController {
 			responseBean.setCusMsg("添加角色失败");
 		}
 		return responseBean;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "delPermission", produces = "application/json; charset=utf-8", method = RequestMethod.POST)
+	public ResponseBean delPermission(@RequestParam("wmAuthGroupId")Integer wmAuthGroupId) {
+		ResponseBean responseBean = new ResponseBean();
+		if (wmAuthGroupId == null || "".equals(wmAuthGroupId) ) {
+			responseBean.setStatus(-1);
+			responseBean.setCusMsg("无权访问");
+			responseBean.setTipMsg("无权访问");
+			return responseBean;
+		}
+		// 查询当前权限是否有绑定
+		if (wmAuthGroupAccessService.getAccessByAuthGroupId(wmAuthGroupId) !=  null) {
+			responseBean.setStatus(2);
+			responseBean.setCusMsg("当前角色组正在使用，请先删除关联");
+			responseBean.setTipMsg("当前角色组正在使用，请先删除关联");
+			return responseBean;
+		}
+		if (!wmAuthGroupService.deletePermission(wmAuthGroupId) ) {
+			responseBean.setStatus(2);
+			responseBean.setCusMsg("删除失败，请稍后重试");
+			responseBean.setTipMsg("删除失败，请稍后重试");
+			return responseBean;
+		}else {
+			responseBean.setStatus(1);
+			responseBean.setCusMsg("SUCCESS");
+			responseBean.setTipMsg("SUCCESS");
+		}
+		return responseBean;
+	}
+	
+	@RequestMapping(value="editPermissionView", method = RequestMethod.GET)
+	public String editPermissionView(@RequestParam("id") Integer id,HttpServletRequest request, HttpServletResponse response) {
+		String html = wmAuthGroupService.getGroupByAuthGroupId(id);
+		request.setAttribute("permission", html);
+		return "admin/permission/edit";
 	}
 	
 	
