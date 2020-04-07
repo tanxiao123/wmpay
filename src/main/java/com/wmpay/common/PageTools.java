@@ -7,27 +7,29 @@ import com.sun.istack.internal.NotNull;
 public class PageTools {
 	
 	@NotNull
-	private Integer page;
+	private Integer start;
 	
 	@NotNull
-	private Integer limit;
-
-	public Integer getPage() {
-		return page;
-	}
-
-	public void setPage(Integer page) {
-		this.page = page;
-	}
-
-	public Integer getLimit() {
-		return limit;
-	}
-
-	public void setLimit(Integer limit) {
-		this.limit = limit;
-	}
+	private Integer length;
 	
+
+
+	public Integer getStart() {
+		return start;
+	}
+
+	public void setStart(Integer start) {
+		this.start = start;
+	}
+
+	public Integer getLength() {
+		return length;
+	}
+
+	public void setLength(Integer length) {
+		this.length = length;
+	}
+
 	
 
 }

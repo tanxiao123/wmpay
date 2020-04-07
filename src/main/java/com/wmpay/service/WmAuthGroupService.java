@@ -17,7 +17,14 @@ public class WmAuthGroupService {
 	private WmAuthGroupDAO wmAuthGroupDAO;
 	
 	public IPage<WmAuthGroup> getAuthGroupList(PageTools pageTools) {
-		return wmAuthGroupDAO.selectPageAuthGroup(new Page<WmAuthGroup>(pageTools.getPage(), pageTools.getLimit()) );
+		// 做特殊处理
+		//Integer pages = (pageTools.getLength() / pageTools.getStart() )+1 ;
+		return wmAuthGroupDAO.selectPageAuthGroup(new Page<WmAuthGroup>(pageTools.getStart(), pageTools.getLength()) );
+	}
+
+	public Boolean addPermission(WmAuthGroup wmAuthGroup) {
+		int result = wmAuthGroupDAO.insert(wmAuthGroup);
+		return result > 0;
 	}
 
 }

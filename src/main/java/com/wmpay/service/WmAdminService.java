@@ -68,6 +68,8 @@ public class WmAdminService {
 		WmAdmin dbWmAdmin = wmAdminDAO.selectOne(queryWrapper);
 		return dbWmAdmin == null ? true : false;
 	}
+
+
 	
 	
 	public ResponseBean login(WmAdmin wmAdmin) {

@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="exploded-war" name="localhost">
+    <output-path>$PROJECT_DIR$/out/artifacts/localhost</output-path>
+    <root id="root">
+      <element id="javaee-facet-resources" facet="wmpay/web/Web" />
+    </root>
+  </artifact>
+</component>

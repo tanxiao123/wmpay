@@ -1,16 +1,22 @@
 package com.wmpay.bean;
 
+import com.alibaba.fastjson.annotation.JSONField;
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
+
 import java.util.Date;
 
 public class WmAuthGroup {
+    @TableId(value = "wm_auth_group_id", type = IdType.AUTO)
     private Integer wmAuthGroupId;
 
     private Integer parentId;
 
     private String name;
 
+    @JSONField(name = "resType", format = "yyyy-MM-dd")
     private Date createdTime;
-
+    @JSONField(name = "resType", format = "yyyy-MM-dd")
     private Date updatedTime;
 
     private String status;

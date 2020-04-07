@@ -1,0 +1,14 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="wmpay:war">
+    <output-path>$PROJECT_DIR$/target</output-path>
+    <properties id="maven-jee-properties">
+      <options>
+        <module>wmpay</module>
+        <packaging>war</packaging>
+      </options>
+    </properties>
+    <root id="archive" name="wmpay.war">
+      <element id="artifact" artifact-name="wmpay:war exploded" />
+    </root>
+  </artifact>
+</component>
