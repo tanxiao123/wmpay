@@ -74,10 +74,11 @@ function initMainTable(url, columns, len, index, columnDefs) {
 			}
 			$.ajax({
 				url: sSource,
-				type: 'GET',
-				data: sendData,
+				type: 'POST',
+				contentType:'application/json;charset=utf-8',
+				data: JSON.stringify(sendData),
 				success: function (data) {
-						aDataSet = data.data;
+					aDataSet = data.data;
 					fnCallback(data);
 				}
 			});

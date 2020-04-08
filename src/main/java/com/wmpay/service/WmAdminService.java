@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.weimai.tools.ResponseBean;
 import com.weimai.tools.encrypt.Des;
 import com.wmpay.bean.WmAdmin;
@@ -16,6 +18,7 @@ import com.wmpay.bean.WmAuthGroup;
 import com.wmpay.bean.WmAuthGroupAccess;
 import com.wmpay.bean.WmAuthRule;
 import com.wmpay.common.AdminCommon;
+import com.wmpay.common.PageTools;
 import com.wmpay.dao.WmAdminDAO;
 import com.wmpay.dao.WmAuthGroupAccessDAO;
 import com.wmpay.dao.WmAuthGroupDAO;
@@ -99,6 +102,10 @@ public class WmAdminService {
 		return response;
 	}
 	
+	public IPage<WmAdmin> getAdminList(PageTools pageTools){
+		return wmAdminDAO.selectPageAdminList(new Page<WmAdmin>(pageTools.getStart(), pageTools.getLength()));
+	}
+	
 	/**
 	 * 根据管理员ID查询所拥有菜单
 	 * @param adminId
@@ -159,7 +166,9 @@ public class WmAdminService {
 	}
 	
 	
-	
+	public Boolean editAdmin(WmAdmin wmAdmin) {
+		return wmAdminDAO.updateById(wmAdmin) > 0;
+	}
 	
 	
 	

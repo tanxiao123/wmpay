@@ -19,13 +19,6 @@ public class FileUtil {
 			FileUtil.properties.load(input);
 		}catch (IOException e) {
 			System.out.println("出错了："+e.getMessage());
-		}finally {
-			try {
-				input.close();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
 		}
 	}
 	

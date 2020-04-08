@@ -41,7 +41,7 @@
 							<span class="f-l"> <a href="javascript:;"
 								onclick="datadel()" class="btn btn-danger radius"><i
 									class="Hui-iconfont">&#xe6e2;</i> 批量删除</a> <a href="javascript:;"
-								onclick="admin_permission_add('添加权限节点','admin-permission-add.html','','310')"
+								onclick="admin_permission_add('添加权限节点','addPermissionView.do','','310')"
 								class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i>
 									添加权限节点</a>
 							</span> <span class="f-r">共有数据：<strong>54</strong> 条

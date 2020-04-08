@@ -32,13 +32,13 @@
         <div class="row clearfix">
           <label class="form-label col-xs-3"><i class="Hui-iconfont">&#xe60d;</i></label>
           <div class="form-controls col-xs-7">
-            <input id="adminName" name="adminName" type="text" placeholder="账户" class="input-text size-L">
+            <input id="adminName" name="adminName" type="text" value="admin" placeholder="账户" class="input-text size-L">
           </div>
         </div>
         <div class="row clearfix">
           <label class="form-label col-xs-3"><i class="Hui-iconfont">&#xe60e;</i></label>
           <div class="form-controls col-xs-7">
-            <input id="password" name="password" type="password" placeholder="密码" class="input-text size-L">
+            <input id="password" name="password" type="password" value="123456" placeholder="密码" class="input-text size-L">
           </div>
         </div>
         <!-- <div class="row clearfix">
