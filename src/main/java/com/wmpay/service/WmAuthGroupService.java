@@ -9,8 +9,10 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.wmpay.bean.WmAdmin;
 import com.wmpay.bean.WmAuthGroup;
 import com.wmpay.bean.WmAuthRule;
 import com.wmpay.bean.VO.SavePermissionVO;
@@ -29,6 +31,10 @@ public class WmAuthGroupService {
 
 	public IPage<WmAuthGroup> getAuthGroupList(PageTools pageTools) {
 		return wmAuthGroupDAO.selectPageAuthGroup(new Page<WmAuthGroup>(pageTools.getStart(), pageTools.getLength()));
+	}
+
+	public List<WmAuthGroup> getAuthGroupList() {
+		return wmAuthGroupDAO.selectList(new QueryWrapper<WmAuthGroup>());
 	}
 
 	public Boolean savePermission(SavePermissionVO savePermissionVO) {
@@ -50,7 +56,7 @@ public class WmAuthGroupService {
 		int result = wmAuthGroupDAO.updateById(wmAuthGroup);
 		return result > 0;
 	}
-	
+
 	public Boolean addPermission(SavePermissionVO savePermissionVO) {
 		StringBuffer groupStr = new StringBuffer();
 		if (savePermissionVO.getGroupCheck().length > 0) {
@@ -88,8 +94,6 @@ public class WmAuthGroupService {
 		int result = wmAuthGroupDAO.deleteById(wmAuthGroupId);
 		return result > 0;
 	}
-
-
 
 	/**
 	 * 根据角色组查询路由菜单
@@ -137,7 +141,7 @@ public class WmAuthGroupService {
 			String[] adminRules = adminRule.split("\\|");
 			set = new HashSet<String>(Arrays.asList(adminRules));
 		}
-		
+
 		// 遍历父节点菜单
 		for (int i = 0; i < parentMenus.size(); i++) {
 			String parentMenuCheck = set.contains(String.valueOf(parentMenus.get(i).getWmAuthRuleId())) ? "checked"
@@ -152,7 +156,7 @@ public class WmAuthGroupService {
 			// 查询子级菜单
 			for (int j = 0; j < menus.size(); j++) {
 				if (menus.get(j).getParentId().equals(parentMenus.get(i).getWmAuthRuleId())) {
-					
+
 					String menuCheck = set.contains(String.valueOf(menus.get(j).getWmAuthRuleId())) ? "checked" : "";
 					menuBuffer.append("<dl class=\"clearfix Hui-admin-permission-list2\">");
 					menuBuffer.append("<dt>");

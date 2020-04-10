@@ -2,6 +2,6 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.wmpay.dao.WmAdminDAO">
 	<select id="selectPageAdminList" resultType="WmAdmin">
-		select * from wm_admin
+		select * from wm_admin where status != '9'
 	</select>
 </mapper>

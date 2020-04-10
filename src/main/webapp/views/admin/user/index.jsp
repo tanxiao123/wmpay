@@ -24,9 +24,9 @@
 					<div class="text-c">
 						<form class="Huiform" method="post" action="" target="_self">
 							<input type="text" class="input-text" style="width: 250px"
-								placeholder="权限名称" id="" name="">
+								placeholder="管理员名称" id="" name="">
 							<button type="submit" class="btn btn-success" id="" name="">
-								<i class="Hui-iconfont">&#xe665;</i> 搜权限节点
+								<i class="Hui-iconfont">&#xe665;</i> 搜索
 							</button>
 						</form>
 					</div>
@@ -36,11 +36,9 @@
 				<div class="panel-body">
 					<div class="clearfix">
 						<span class="f-l"> <a href="javascript:;"
-							onclick="datadel()" class="btn btn-danger radius"><i
-								class="Hui-iconfont">&#xe6e2;</i> 批量删除</a> <a href="javascript:;"
-							onclick="admin_permission_add('添加权限节点','addPermissionView.do','','310')"
+							onclick="admin_add()"
 							class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i>
-								添加权限节点</a>
+								添加管理员</a>
 						</span> <span class="f-r">共有数据：<strong>54</strong> 条
 						</span>
 					</div>
@@ -65,30 +63,45 @@
 			</div>
 		</article>
 	</div>
-	
+
 	<jsp:include page="/views/admin/common/footer.jsp"></jsp:include>
 	<script type="text/javascript"
 		src="${pageContext.request.contextPath }/lib/laypage/1.2/laypage.js"></script>
 	<script type="text/javascript"
-		src="${pageContext.request.contextPath }/static/business/js/main.js"></script> 
-	<script type="text/javascript" 
+		src="${pageContext.request.contextPath }/static/business/js/main.js"></script>
+	<script type="text/javascript"
 		src="${ pageContext.request.contextPath }/lib/datatables/1.10.15/jquery.dataTables.min.js"></script>
 	<!--/请在上方写此页面业务相关的脚本-->
 	<script type="text/javascript"
 		src="${ pageContext.request.contextPath }/static/business/js/common.js"></script>
-		
+
 	<script type="text/javascript">
+		var confirmTitle = "是否要禁用管理员？";
 		$(function(){
 			// 初始化表格信息
 			var columns = [
-				{data: 'wmAdminId',  sClass: 'center'},
-				{data: 'username',  sClass: 'center'},
-				{data: 'nickname',  sClass: 'center' },
+				{data: 'wmAdminId',  sClass: 'center', render:function(data,type,row,meta){
+					return data == null ? '' : data;
+				}},
+				{data: 'username',  sClass: 'center', render:function(data,type,row,meta){
+					return data == null ? '' : data;
+				}},
+				{data: 'nickname',  sClass: 'center', render:function(data,type,row,meta){
+					return data == null ? '' : data;
+				} },
 				{data: 'status',  sClass: 'center'},
-				{data: 'logintime',  sClass: 'center'},
-				{data: 'loginip', sClass: 'center'},
-				{data: 'created_time', sClass: 'center'},
-				{data: 'updated_time', sClass: 'center'}
+				{data: 'logintime',  sClass: 'center', render:function(data,type,row,meta){
+					return data == null ? '' : data;
+				}},
+				{data: 'loginip', sClass: 'center', render:function(data,type,row,meta){
+					return data == null ? '' : data;
+				}},
+				{data: 'created_time', sClass: 'center', render:function(data,type,row,meta){
+					return data == null ? '' : data;
+				}},
+				{data: 'updated_time', sClass: 'center', render:function(data,type,row,meta){
+					return data == null ? '' : data;
+				}}
 			];
 			
 			var columnDefs = [
@@ -105,10 +118,23 @@
 				},
 				{
 					targets: [8],
-					render: function() {
+					render: function(data, type, row) {
+						console.log(row.status);
+						var statusName = "";
+						switch(row.status){
+							case "1":
+								statusName = "禁用";
+								break;
+							case "2":
+								statusName = "启用";
+								confirmTitle = "是否要启用管理员?";
+								break;
+						}
+						console.log(statusName);
 						return `
-							<a title="编辑" href="javascript:;"  id="editPermission"  class="ml-5 " style="text-decoration:none"><i class="Hui-iconfont">&#xe6df;</i></a>
-							<a title="删除" href="javascript:;"  id="delPermission" class="ml-5 " style="text-decoration:none"><i class="Hui-iconfont">&#xe6e2;</i></a>
+							<a style="text-decoration:none;margin:0 5px;" id="editInfo" href="javascript:;" title="编辑">编辑信息</a>
+							<a style="text-decoration:none;margin:0 5px;" id="forbiddenAdmin" href="javascript:;" title="\${statusName}">\${statusName}</a>
+							<a style="text-decoration:none;margin:0 5px;" id="deleteAdmin" href="javascript:;" title="删除">\删除</a>
 						`;
 					}
 				}
@@ -117,8 +143,71 @@
 			// 初始化表格数据
 			initMainTable("adminList.do",columns,20,1,columnDefs);
 			
+			// 编辑信息
+			tableCick("#editInfo", function(data,rows){
+				console.log(data);
+				var index = layer.open({
+					type: 2,
+					title: "编辑信息",
+					content: "editAdminView.do?wmAdminId="+data.wmAdminId,
+					area: ['800px','600px']
+				});
+				layer.full(index);
+			});
 			
+			// 启用禁用用户
+			tableCick("#forbiddenUser", function(data,rows){
+				var index = layer.confirm(confirmTitle, function(){
+					$.ajax({
+						url: "forbiddenAdmin.do",
+						type: 'POST',
+						data: {wmAdminId: data.wmAdminId},
+						success: function (data) {
+							console.log(data);
+							layer.msg(data.cusMsg);
+							tableReload();
+						},
+						error: function (error){
+							console.log(error);
+						}
+					});
+					layer.close(index);
+				});
+			});
+
+			tableCick("#deleteAdmin", function(data,rows){
+				var index = layer.confirm("是否要删除该管理员？", function () {
+					$.ajax({
+						url: "deleteAdmin.do",
+						type: 'POST',
+						data: {wmAdminId: data.wmAdminId},
+						success: function (data) {
+							console.log(data);
+							layer.msg(data.cusMsg);
+							tableReload();
+						},
+						error: function (error){
+							console.log(error);
+						}
+					});
+				});
+			});
+			
+
 		});
+
+		/**
+		 * 添加管理员
+		 */
+		function admin_add() {
+			var index = layer.open({
+				type: 2,
+				title: "添加管理员",
+				content: "addAdminView.do",
+				area: ['800px','600px']
+			});
+			layer.full(index);
+		}
 	</script>
 </body>
 </html>

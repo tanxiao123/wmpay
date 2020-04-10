@@ -1,6 +1,11 @@
 package com.wmpay.bean;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
+
 public class WmAuthGroupAccess {
+
+    @TableId(value = "wm_auth_group_access_id", type = IdType.AUTO)
     private Integer wmAuthGroupAccessId;
 
     private Integer wmAuthGroupId;

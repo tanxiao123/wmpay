@@ -5,8 +5,10 @@ import java.util.Date;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableLogic;
 
 public class WmAdmin {
 	
@@ -27,14 +29,18 @@ public class WmAdmin {
 
     private String avatar;
 
+    @JSONField(name = "resType", format = "yyyy-MM-dd")
     private Date logintime;
 
     private String loginip;
 
+    @JSONField(name = "resType", format = "yyyy-MM-dd")
     private Date createdTime;
 
+    @JSONField(name = "resType", format = "yyyy-MM-dd")
     private Date updatedTime;
 
+    @TableLogic(value = "1", delval = "9")
     private String status;
 
     

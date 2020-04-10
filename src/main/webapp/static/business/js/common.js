@@ -99,14 +99,25 @@ function tableCick(idName,callback) {
 	})
 }
 
-function sendPost(url,data,callBack) {
+/**
+ * 刷新表格
+ * @returns
+ */
+function tableReload() {
+	$("#dataTable").dataTable().fnDraw(false);
+}
+
+function jsonPost(url,data,callBack) {
 	$.ajax({
 		url: url,
 		type: 'POST',
-		dataType: 'json',
-		data: data,
-		success: function (result){
-			callBack(result);
+		contentType:'application/json;charset=utf-8',
+		data: JSON.stringify(data),
+		success: function (data) {
+			callBack(data);
+		},
+		error: function (error){
+			console.log(error);
 		}
 	});
 }

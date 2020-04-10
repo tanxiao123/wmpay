@@ -14,7 +14,6 @@ public class BackEndInterceptor implements HandlerInterceptor {
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
-		
 		WmAdmin admin =  (WmAdmin) request.getSession().getAttribute(AdminCommon.USER_SESSION);
 		if (admin != null) {
 			return true;

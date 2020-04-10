@@ -2,7 +2,10 @@ package com.wmpay.bean;
 
 import java.util.Date;
 
+import com.baomidou.mybatisplus.annotation.TableLogic;
+
 public class WmAuthRule {
+	
     private Integer wmAuthRuleId;
 
     private String type;
@@ -25,6 +28,7 @@ public class WmAuthRule {
 
     private Integer weigh;
 
+    @TableLogic(value="1",delval="9")
     private String status;
 
 
