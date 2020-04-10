@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.xml.ws.Response;
 
 @Controller
 @RequestMapping("/admin/area")
@@ -37,8 +38,8 @@ public class AreaController {
      * @return
      */
     @ResponseBody
-    @RequestMapping(value = "getAreaList", produces = "application/json; charset=utf-8")
-    public DataTableResponse getAreaList(@Validated  PageTools pageTools) {
+    @RequestMapping(value = "getAreaList", produces = "application/json; charset=utf-8", method = RequestMethod.POST)
+    public DataTableResponse getAreaList(@Validated @RequestBody PageTools pageTools) {
         DataTableResponse responseBean = new DataTableResponse();
         IPage<WmArea> areaList = wmAreaService.selectListPage(pageTools);
         responseBean.setStatus(ResponseEnum.SUCCESS.status);
@@ -58,6 +59,7 @@ public class AreaController {
      * @param response
      * @return
      */
+    @RequestMapping(value = "editAreaView", method = RequestMethod.GET)
     public String editAreaView(@RequestParam("wmAreaId")Integer wmAreaId, HttpServletRequest request, HttpServletResponse response) {
         ResponseBean responseBean = new ResponseBean();
         WmArea wmAreaServer = wmAreaService.getWmAreaById(wmAreaId);
@@ -68,6 +70,27 @@ public class AreaController {
             request.setAttribute("errorMessage", "抱歉，没有找到地区信息");
             return "error-500";
         }
+    }
+
+    /**
+     * 编辑地区接口
+     * @param wmArea
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = "editArea", produces = "application/json; charset=utf-8", method = RequestMethod.POST)
+    public ResponseBean editArea(@Validated @RequestBody WmArea wmArea) {
+        ResponseBean responseBean = new ResponseBean();
+        if (wmAreaService.updateWmArea(wmArea)){
+            responseBean.setStatus(ResponseEnum.SUCCESS.status);
+            responseBean.setTipMsg(ResponseEnum.SUCCESS.msg);
+            responseBean.setCusMsg(ResponseEnum.SUCCESS.msg);
+        }else{
+            responseBean.setStatus(ResponseEnum.ERROR.status);
+            responseBean.setTipMsg(ResponseEnum.ERROR.msg);
+            responseBean.setCusMsg(ResponseEnum.ERROR.msg);
+        }
+        return responseBean;
     }
 
 }

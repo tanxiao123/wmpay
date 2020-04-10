@@ -1,15 +1,30 @@
 package com.wmpay.bean;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.wmpay.template.Update;
+import org.hibernate.validator.constraints.NotBlank;
+
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 public class WmArea {
+
+    @NotNull(message = "地区ID不可为空", groups = {Update.class})
+    @TableId(value = "wm_area_id", type = IdType.AUTO)
     private Integer wmAreaId;
 
+    @NotBlank(message = "地区昵称不可为空")
     private String name;
 
+    @NotBlank(message = "地区Code不可为空")
     private String code;
 
+    @NotNull(message = "上级ID不可为空")
     private Integer parentId;
+
+    @NotNull(message = "等级不可为空")
+    private Integer level;
 
     private Date createdTime;
 
@@ -45,6 +60,14 @@ public class WmArea {
 
     public void setParentId(Integer parentId) {
         this.parentId = parentId;
+    }
+
+    public Integer getLevel() {
+        return level;
+    }
+
+    public void setLevel(Integer level) {
+        this.level = level;
     }
 
     public Date getCreatedTime() {

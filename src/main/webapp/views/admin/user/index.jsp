@@ -96,10 +96,10 @@
 				{data: 'loginip', sClass: 'center', render:function(data,type,row,meta){
 					return data == null ? '' : data;
 				}},
-				{data: 'created_time', sClass: 'center', render:function(data,type,row,meta){
+				{data: 'createdTime', sClass: 'center', render:function(data,type,row,meta){
 					return data == null ? '' : data;
 				}},
-				{data: 'updated_time', sClass: 'center', render:function(data,type,row,meta){
+				{data: 'updatedTime', sClass: 'center', render:function(data,type,row,meta){
 					return data == null ? '' : data;
 				}}
 			];

@@ -27,4 +27,9 @@ public class WmAreaService {
         return wmAreaDAO.selectById(wmAreaId);
     }
 
+    public Boolean updateWmArea(WmArea wmArea) {
+        int result = wmAreaDAO.updateById(wmArea);
+        return result > 0;
+    }
+
 }
