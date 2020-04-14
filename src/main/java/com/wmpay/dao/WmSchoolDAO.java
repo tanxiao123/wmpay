@@ -1,30 +1,17 @@
 package com.wmpay.dao;
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.wmpay.bean.VO.SchoolVO;
 import com.wmpay.bean.WmSchool;
 import com.wmpay.bean.WmSchoolExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
-public interface WmSchoolDAO {
-    long countByExample(WmSchoolExample example);
+public interface WmSchoolDAO extends BaseMapper<WmSchool> {
 
-    int deleteByExample(WmSchoolExample example);
+    IPage<SchoolVO> selectParentSchool(Page<WmSchool> page);
 
-    int deleteByPrimaryKey(Integer wmSchoolId);
-
-    int insert(WmSchool record);
-
-    int insertSelective(WmSchool record);
-
-    List<WmSchool> selectByExample(WmSchoolExample example);
-
-    WmSchool selectByPrimaryKey(Integer wmSchoolId);
-
-    int updateByExampleSelective(@Param("record") WmSchool record, @Param("example") WmSchoolExample example);
-
-    int updateByExample(@Param("record") WmSchool record, @Param("example") WmSchoolExample example);
-
-    int updateByPrimaryKeySelective(WmSchool record);
-
-    int updateByPrimaryKey(WmSchool record);
+    IPage<SchoolVO> selectPointSchool(Page<WmSchool> page);
 }

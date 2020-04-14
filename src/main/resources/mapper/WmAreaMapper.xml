@@ -3,7 +3,7 @@
 <mapper namespace="com.wmpay.dao.WmAreaDAO">
 
   <select id="selectAreaPage" resultType="wmArea">
-    select * from wm_area
+    select * from wm_area where status = 1
   </select>
 
 </mapper>

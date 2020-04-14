@@ -1,30 +1,15 @@
 package com.wmpay.dao;
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.wmpay.bean.VO.GradeVO;
 import com.wmpay.bean.WmGrade;
 import com.wmpay.bean.WmGradeExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
-public interface WmGradeDAO {
-    long countByExample(WmGradeExample example);
+public interface WmGradeDAO extends BaseMapper<WmGrade> {
 
-    int deleteByExample(WmGradeExample example);
-
-    int deleteByPrimaryKey(Integer wmGradeId);
-
-    int insert(WmGrade record);
-
-    int insertSelective(WmGrade record);
-
-    List<WmGrade> selectByExample(WmGradeExample example);
-
-    WmGrade selectByPrimaryKey(Integer wmGradeId);
-
-    int updateByExampleSelective(@Param("record") WmGrade record, @Param("example") WmGradeExample example);
-
-    int updateByExample(@Param("record") WmGrade record, @Param("example") WmGradeExample example);
-
-    int updateByPrimaryKeySelective(WmGrade record);
-
-    int updateByPrimaryKey(WmGrade record);
+    IPage<GradeVO> selectGradeList(Page<WmGrade> page);
 }

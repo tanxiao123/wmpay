@@ -1,15 +1,15 @@
 <%--
   Created by IntelliJ IDEA.
   User: Administrator
-  Date: 2020-04-10
-  Time: 15:18
+  Date: 2020-04-13
+  Time: 9:41
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
     <jsp:include page="/views/admin/common/header.jsp">
-        <jsp:param value="编辑地区" name="title" />
+        <jsp:param value="新增地区" name="title" />
     </jsp:include>
 </head>
 <body style="background-color: #fff">
@@ -18,12 +18,12 @@
         <div class="panel-body">
             <form action="" method="post" class="form form-horizontal"
                   id="form-area-edit">
-                <input type="hidden" name="wmAreaId" value="${requestScope.area.wmAreaId}"  />
+                <input type="hidden" name="wmAreaId" value=""  />
                 <div class="row clearfix">
                     <label class="form-label col-xs-4 col-sm-3"><span
                             class="c-red">*</span>地区名称：</label>
                     <div class="form-controls col-xs-8 col-sm-9">
-                        <input type="text" class="input-text" value="${requestScope.area.name}" placeholder=""
+                        <input type="text" class="input-text" value="" placeholder="请输入地区名称"
                                id="areaName" name="areaName" datatype="*4-16"
                                nullmsg="地区名称不可为空">
                     </div>
@@ -32,7 +32,7 @@
                     <label class="form-label col-xs-4 col-sm-3"><span
                             class="c-red">*</span>地区Code：</label>
                     <div class="form-controls col-xs-8 col-sm-9">
-                        <input type="text" class="input-text" value="${requestScope.area.code}" placeholder=""
+                        <input type="text" class="input-text" value="" placeholder="请输入地区Code"
                                id="areaCode" name="areaCode" datatype="*4-16"
                                nullmsg="地区Code不可为空">
                     </div>
@@ -41,10 +41,9 @@
                     <label class="form-label col-xs-4 col-sm-3"><span
                             class="c-red">*</span>上级地区：</label>
                     <div class="form-controls col-xs-8 col-sm-9">
-							<span class="select-box" style="width: 150px;"> <select
+							<span class="select-box" style="width: 150px;">
+                                <select
                                     class="select" name="parent_id" id="parent_id" size="1" >
-									<option value="1">正常</option>
-									<option value="2">禁用</option>
 							</select>
 							</span>
                     </div>
@@ -53,7 +52,7 @@
                     <label class="form-label col-xs-4 col-sm-3"><span
                             class="c-red">*</span>地区等级：</label>
                     <div class="form-controls col-xs-8 col-sm-9">
-                        <input type="text" class="input-text" value="${requestScope.area.level}" placeholder=""
+                        <input type="text" class="input-text" value="1" placeholder="请输入地区等级"
                                id="level" name="level" datatype="*4-16"
                                nullmsg="地区等级不可为空">
                     </div>
@@ -77,14 +76,13 @@
 <script type="text/javascript" src="${pageContext.request.contextPath }/lib/jquery.validation/1.14.0/messages_zh.js"></script>
 <script type="text/javascript" src="${ pageContext.request.contextPath }/static/business/js/common.js?ver=1"></script>
 <script>
-    $(function(){
+    $(function () {
         var areaArray = getArea('getAreaList.do');
         var selectHTML = "<option value='0'>顶级</option>";
         for(var i=0; i<areaArray.length; i++){
             selectHTML += areaArray[i]
         }
         $("#parent_id").html(selectHTML);
-
         $("#form-area-edit").validate({
             rules: {
                 areaName: {
@@ -102,14 +100,13 @@
             success : "valid",
             submitHandler: function (form) {
                 var params = {
-                    wmAreaId: "${requestScope.area.wmAreaId}",
                     name: $("#areaName").val(),
                     code: $("#areaCode").val(),
                     parentId: $("#parent_id").val(),
                     level: $("#level").val()
                 };
                 $.ajax({
-                    url: "editArea.do",
+                    url: "addArea.do",
                     data: params,
                     type: 'POST',
                     success: function(res){
@@ -124,8 +121,6 @@
                 });
             }
         });
-
-
-    });
+    })
 </script>
 </html>

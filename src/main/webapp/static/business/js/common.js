@@ -107,6 +107,24 @@ function tableReload() {
 	$("#dataTable").dataTable().fnDraw(false);
 }
 
+/**
+ * 默认表格Render
+ * @param data
+ * @param type
+ * @param row
+ * @param meta
+ * @returns {*}
+ */
+function tableRender(data,type,row,meta) {
+	return data == null ? '' : data;
+}
+
+/**
+ * 发送POST请求数据  该方法针对于@RequestBody注解
+ * @param url
+ * @param data
+ * @param callBack
+ */
 function jsonPost(url,data,callBack) {
 	$.ajax({
 		url: url,
@@ -120,4 +138,83 @@ function jsonPost(url,data,callBack) {
 			console.log(error);
 		}
 	});
+}
+
+/**
+ * 打开一个新的窗口
+ * @param title
+ * @param url
+ */
+function openWindow(title,url) {
+	return layer.open({
+		type: 2,
+		title: title,
+		content: url,
+		area: ['800px', '600px']
+	});
+}
+
+function openWindowArea(title, url, area) {
+	return layer.open({
+		type: 2,
+		title: title,
+		content: url,
+		area: area
+	})
+}
+
+/**
+ * 打开一个新的窗口  并将该窗口最大化显示
+ * @param title
+ * @param url
+ */
+function goWindow(title, url) {
+	var index = layer.open({
+		type: 2,
+		title: title,
+		content: url,
+		area: ['800px', '600px']
+	});
+	layer.full(index);
+	return index;
+}
+
+
+function times(str, num){
+	return num > 0 ? str += times(str, --num): '';
+}
+
+function getArea (url) {
+	var array = [];
+	$.ajax({
+		url: url,
+		data: JSON.stringify({start:1, length:999}),
+		contentType:'application/json;charset=utf-8',
+		type: 'POST',
+		async: false,
+		success: function (res) {
+			var data = res.data;
+
+			for (var i = 0; i < data.length; i++) {
+				var count = 0;
+				for (var j = 1; j < data.length; j++) {
+					if(data[i].wmAreaId == data[j].parentId) {
+						var index1 = data.indexOf(data[i])
+						var index2 = data.indexOf(data[j])
+						var delArr = data.splice(index2, 1)
+						count++;
+						// 将数排列到当前父地区数据下
+						data.splice(index1 + count, 0, delArr[0])
+					}
+				}
+			}
+			for (var i = 0; i < data.length; i++) {
+				var str = "<option value='"+data[i].wmAreaId+"'>";
+				str += times('&nbsp;',(data[i].level) - 1) + '├ ' + data[i].name + '\r\n';
+				str += "</option>";
+				array.push(str);
+			}
+		}
+	});
+	return array;
 }

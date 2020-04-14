@@ -6,9 +6,11 @@ import com.wmpay.bean.WmArea;
 import com.wmpay.common.PageTools;
 import com.wmpay.service.WmAreaService;
 import com.wmpay.template.ResponseEnum;
+import com.wmpay.template.Update;
 import com.wmpay.util.DataTableResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,7 +31,7 @@ public class AreaController {
      */
     @RequestMapping(value = "areaView", method = RequestMethod.GET)
     public String areaView() {
-        return "/admin/area/index";
+        return "admin/area/index";
     }
 
     /**
@@ -62,6 +64,7 @@ public class AreaController {
     @RequestMapping(value = "editAreaView", method = RequestMethod.GET)
     public String editAreaView(@RequestParam("wmAreaId")Integer wmAreaId, HttpServletRequest request, HttpServletResponse response) {
         ResponseBean responseBean = new ResponseBean();
+
         WmArea wmAreaServer = wmAreaService.getWmAreaById(wmAreaId);
         if (wmAreaServer != null){
             request.setAttribute("area", wmAreaServer);
@@ -79,8 +82,14 @@ public class AreaController {
      */
     @ResponseBody
     @RequestMapping(value = "editArea", produces = "application/json; charset=utf-8", method = RequestMethod.POST)
-    public ResponseBean editArea(@Validated @RequestBody WmArea wmArea) {
+    public ResponseBean editArea( @Validated({Update.class}) WmArea wmArea, BindingResult result) {
         ResponseBean responseBean = new ResponseBean();
+        if (result.hasErrors()) {
+            responseBean.setStatus(ResponseEnum.FIELD_ERROR.status);
+            responseBean.setCusMsg(result.getFieldError().getDefaultMessage());
+            responseBean.setTipMsg(result.getFieldError().getDefaultMessage());
+            return responseBean;
+        }
         if (wmAreaService.updateWmArea(wmArea)){
             responseBean.setStatus(ResponseEnum.SUCCESS.status);
             responseBean.setTipMsg(ResponseEnum.SUCCESS.msg);
@@ -90,6 +99,73 @@ public class AreaController {
             responseBean.setTipMsg(ResponseEnum.ERROR.msg);
             responseBean.setCusMsg(ResponseEnum.ERROR.msg);
         }
+        return responseBean;
+    }
+
+    /**
+     * 跳转添加地区界面
+     * @return
+     */
+    @RequestMapping(value = "addAreaView", method = RequestMethod.GET)
+    public String addAreaView() {
+        return "admin/area/add";
+    }
+
+    /**
+     * 添加地区操作
+     * @param wmArea
+     * @param result
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = "addArea", produces = "application/json; charset=utf-8", method = RequestMethod.POST)
+    public ResponseBean addArea(@Validated WmArea wmArea, BindingResult result) {
+        ResponseBean responseBean = new ResponseBean();
+        if (result.hasErrors()) {
+            responseBean.setStatus(ResponseEnum.FIELD_ERROR.status);
+            responseBean.setCusMsg(result.getFieldError().getDefaultMessage());
+            responseBean.setTipMsg(result.getFieldError().getDefaultMessage());
+            return responseBean;
+        }
+        if (wmAreaService.addWmArea(wmArea)){
+            responseBean.setStatus(ResponseEnum.SUCCESS.status);
+            responseBean.setTipMsg(ResponseEnum.SUCCESS.msg);
+            responseBean.setCusMsg(ResponseEnum.SUCCESS.msg);
+        }else{
+            responseBean.setStatus(ResponseEnum.ERROR.status);
+            responseBean.setTipMsg(ResponseEnum.ERROR.msg);
+            responseBean.setCusMsg(ResponseEnum.ERROR.msg);
+        }
+
+        return responseBean;
+    }
+
+    /**
+     * 删除地区
+     * @param wmAreaId
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = "delArea", produces = "application/json; charset=utf-8", method = RequestMethod.POST)
+    public ResponseBean delArea(@RequestParam("wmAreaId")Integer wmAreaId) {
+        ResponseBean responseBean = new ResponseBean();
+        if (wmAreaId == null){
+            responseBean.setStatus(ResponseEnum.FIELD_ERROR.status);
+            responseBean.setCusMsg("地区ID不可为空");
+            responseBean.setTipMsg("地区ID不可为空");
+            return responseBean;
+        }
+
+        if (wmAreaService.delWmArea(wmAreaId) ){
+            responseBean.setStatus(ResponseEnum.SUCCESS.status);
+            responseBean.setTipMsg(ResponseEnum.SUCCESS.msg);
+            responseBean.setCusMsg(ResponseEnum.SUCCESS.msg);
+        }else{
+            responseBean.setStatus(ResponseEnum.ERROR.status);
+            responseBean.setTipMsg(ResponseEnum.ERROR.msg);
+            responseBean.setCusMsg(ResponseEnum.ERROR.msg);
+        }
+
         return responseBean;
     }
 

@@ -1,7 +1,10 @@
 package com.wmpay.bean;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.wmpay.template.Update;
 import org.hibernate.validator.constraints.NotBlank;
 
@@ -20,15 +23,19 @@ public class WmArea {
     @NotBlank(message = "地区Code不可为空")
     private String code;
 
-    @NotNull(message = "上级ID不可为空")
     private Integer parentId;
 
     @NotNull(message = "等级不可为空")
     private Integer level;
 
+    @JSONField(name = "resType", format = "yyyy-MM-dd")
     private Date createdTime;
 
+    @JSONField(name = "resType", format = "yyyy-MM-dd")
     private Date updatedTime;
+
+    @TableLogic(value = "1", delval = "9")
+    private String status;
 
     public Integer getWmAreaId() {
         return wmAreaId;
@@ -84,5 +91,13 @@ public class WmArea {
 
     public void setUpdatedTime(Date updatedTime) {
         this.updatedTime = updatedTime;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

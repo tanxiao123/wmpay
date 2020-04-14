@@ -5,6 +5,8 @@ import java.util.Date;
 public class WmStudent {
     private Integer wmStudentId;
 
+    private Integer wmGradeId;
+
     private String name;
 
     private String sNumber;
@@ -27,6 +29,14 @@ public class WmStudent {
 
     public void setWmStudentId(Integer wmStudentId) {
         this.wmStudentId = wmStudentId;
+    }
+
+    public Integer getWmGradeId() {
+        return wmGradeId;
+    }
+
+    public void setWmGradeId(Integer wmGradeId) {
+        this.wmGradeId = wmGradeId;
     }
 
     public String getName() {

@@ -1,34 +1,21 @@
-package com.wmpay.bean;
+package com.wmpay.bean.VO;
 
-import com.alibaba.fastjson.annotation.JSONField;
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableLogic;
-import com.wmpay.template.Update;
-
-import javax.validation.constraints.NotNull;
 import java.util.Date;
 
-public class WmGrade {
-
-    @NotNull(message = "班级ID不可为空", groups = {Update.class})
-    @TableId(value = "wmGradeId", type = IdType.AUTO)
+public class GradeVO {
     private Integer wmGradeId;
 
-    @NotNull(message = "学校ID不可为空")
     private Integer wmSchoolId;
 
-    @NotNull(message = "班级名称不可为空")
     private String name;
 
-    @TableLogic(value = "1", delval = "9")
     private String status;
 
-    @JSONField(name = "resType", format = "yyyy-MM-dd")
     private Date createdTime;
 
-    @JSONField(name = "resType", format = "yyyy-MM-dd")
     private Date updatedTime;
+
+    private String schoolName;
 
     public Integer getWmGradeId() {
         return wmGradeId;
@@ -51,7 +38,7 @@ public class WmGrade {
     }
 
     public void setName(String name) {
-        this.name = name == null ? null : name.trim();
+        this.name = name;
     }
 
     public String getStatus() {
@@ -76,5 +63,13 @@ public class WmGrade {
 
     public void setUpdatedTime(Date updatedTime) {
         this.updatedTime = updatedTime;
+    }
+
+    public String getSchoolName() {
+        return schoolName;
+    }
+
+    public void setSchoolName(String schoolName) {
+        this.schoolName = schoolName;
     }
 }

@@ -8,6 +8,8 @@ import com.wmpay.dao.WmAreaDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
+
 @Service
 public class WmAreaService {
 
@@ -27,8 +29,36 @@ public class WmAreaService {
         return wmAreaDAO.selectById(wmAreaId);
     }
 
+    /**
+     * 修改地区
+     * @param wmArea
+     * @return
+     */
     public Boolean updateWmArea(WmArea wmArea) {
+        wmArea.setUpdatedTime(new Date());
         int result = wmAreaDAO.updateById(wmArea);
+        return result > 0;
+    }
+
+    /**
+     * 添加地区
+     * @param wmArea
+     * @return
+     */
+    public Boolean addWmArea(WmArea wmArea) {
+        wmArea.setUpdatedTime(new Date());
+        wmArea.setCreatedTime(new Date());
+        int result = wmAreaDAO.insert(wmArea);
+        return result > 0;
+    }
+
+    /**
+     * 删除地区
+     * @param wmAreaId
+     * @return
+     */
+    public Boolean delWmArea(Integer wmAreaId) {
+        int result = wmAreaDAO.deleteById(wmAreaId);
         return result > 0;
     }
 
