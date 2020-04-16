@@ -18,4 +18,17 @@
 	 	AND parent_id != 0 AND `status` = 'ON' AND `type` = 'menu' ORDER BY weigh desc
 </select>
 
+<select id="getFunctionMenusInIds" resultType="wmAuthRule">
+	select * from wm_auth_rule where `status` = 'ON' AND `type` = 'file'
+</select>
+
+<select id="getAllMenu" resultType="string">
+	select group_concat(wm_auth_rule_id) as rule_ids  from wm_auth_rule where `status` = 'ON' AND type = 'menu'
+</select>
+
+<select id="getAllFunction" resultType="string">
+	select group_concat(wm_auth_rule_id) as rule_ids  from wm_auth_rule where `status` = 'ON' AND type = 'file'
+</select>
+	
+
 </mapper>

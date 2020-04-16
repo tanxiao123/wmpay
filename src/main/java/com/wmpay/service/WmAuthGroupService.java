@@ -99,7 +99,6 @@ public class WmAuthGroupService {
 	 * 根据角色组查询路由菜单
 	 * 
 	 * @param wmAuthGroupId
-	 * @param type
 	 * @return
 	 */
 	public String getGroupByAuthGroupId(Integer wmAuthGroupId) {
