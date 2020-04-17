@@ -9,7 +9,7 @@
 <html>
 <head>
     <jsp:include page="/views/admin/common/header.jsp">
-        <jsp:param value="学校列表" name="title"/>
+        <jsp:param value="班级列表" name="title"/>
     </jsp:include>
 </head>
 <body>
@@ -17,7 +17,7 @@
     <nav class="breadcrumb"
          style="background-color: #fff; padding: 0 24px">
         首页 <span class="c-gray en">/</span> 学校管理 <span class="c-gray en">/</span>
-        学校列表 <a class="btn btn-success radius f-r"
+        班级列表 <a class="btn btn-success radius f-r"
                 style="line-height: 1.6em; margin-top: 3px"
                 href="javascript:location.replace(location.href);" title="刷新"><i
             class="Hui-iconfont">&#xe68f;</i></a>
@@ -41,9 +41,9 @@
             <div class="panel-body">
                 <div class="clearfix">
 						<span class="f-l"> <a href="javascript:;"
-                                              onclick="openWindowArea('新增学校','addSchoolView.do',[400,300]);"
+                                              onclick="openWindow('新增班级','addGradeView.do');"
                                               class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i>
-								添加学校</a>
+								新增班级</a>
 						</span> <span class="f-r">共有数据：<strong>54</strong> 条
 						</span>
                 </div>
@@ -138,9 +138,6 @@
         // 初始化表格信息
         initMainTable('getGradeList.do', columns, 20, 1, columnDefs);
 
-        tableCick('#addPoint', function(data, rows) {
-            openWindowArea('添加分校区','addPointSchoolView.do?wmSchoolId='+data.wmSchoolId, [400,400])
-        });
 
         tableCick('#del', function (data, rows) {
             layer.confirm('是否要删除该学校？', function () {
@@ -155,7 +152,7 @@
 
         // 编辑信息
         tableCick('#edit', function (data, rows) {
-            var index = goWindow('编辑学校', 'editSchoolView.do?wmSchoolId=' + data.wmSchoolId);
+            var index = goWindow('编辑学校', 'editGradeView.do?wmSchoolId=' + data.wmSchoolId);
             layer.full(index);
         })
     });

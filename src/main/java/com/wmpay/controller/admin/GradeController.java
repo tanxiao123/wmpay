@@ -7,12 +7,16 @@ import com.wmpay.bean.WmGrade;
 import com.wmpay.common.PageTools;
 import com.wmpay.service.WmGradeService;
 import com.wmpay.template.ResponseEnum;
+import com.wmpay.template.Update;
 import com.wmpay.util.DataTableResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 
 @Controller
@@ -83,6 +87,53 @@ public class GradeController {
         }
 
         if (wmGradeService.addGrade(wmGrade)){
+            responseBean.setStatus(ResponseEnum.SUCCESS.status);
+            responseBean.setTipMsg(ResponseEnum.SUCCESS.msg);
+            responseBean.setCusMsg(ResponseEnum.SUCCESS.msg);
+        }else{
+            responseBean.setStatus(ResponseEnum.ERROR.status);
+            responseBean.setTipMsg(ResponseEnum.ERROR.msg);
+            responseBean.setCusMsg(ResponseEnum.ERROR.msg);
+        }
+        return responseBean;
+    }
+
+    /**
+     * 跳转删除编辑View
+     * @param wmGradeId
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping(value = "editGradeView", produces = "application/json; charset=utf-8", method = RequestMethod.GET)
+    public String editGradeView(@RequestParam("wmGradeId") Integer wmGradeId, HttpServletRequest request, HttpServletResponse response) {
+        WmGrade wmGrade = wmGradeService.getGradeById(wmGradeId);
+        if (wmGrade != null){
+            request.setAttribute("wmGrade", wmGrade);
+            return "admin/grade/edit";
+        }else{
+            request.setAttribute("errorMessage", "抱歉，班级ID不可为空");
+            return "error-500";
+        }
+    }
+
+    /**
+     * 编辑班级API
+     * @param wmGrade
+     * @param result
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = "editGrade", produces = "application/json; charset=utf-8", method = RequestMethod.POST)
+    public ResponseBean editGrade(@RequestBody @Validated({Update.class}) WmGrade wmGrade, BindingResult result) {
+        ResponseBean responseBean = new ResponseBean();
+        if (result.hasErrors()) {
+            responseBean.setStatus(ResponseEnum.FIELD_ERROR.status);
+            responseBean.setCusMsg(result.getFieldError().getDefaultMessage());
+            responseBean.setTipMsg(result.getFieldError().getDefaultMessage());
+            return responseBean;
+        }
+        if (wmGradeService.editGrade(wmGrade) ){
             responseBean.setStatus(ResponseEnum.SUCCESS.status);
             responseBean.setTipMsg(ResponseEnum.SUCCESS.msg);
             responseBean.setCusMsg(ResponseEnum.SUCCESS.msg);

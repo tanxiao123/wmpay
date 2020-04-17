@@ -1,15 +1,15 @@
 <%--
   Created by IntelliJ IDEA.
   User: Administrator
-  Date: 2020-04-14
-  Time: 13:26
+  Date: 2020-04-17
+  Time: 10:46
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
     <jsp:include page="/views/admin/common/header.jsp">
-        <jsp:param value="学校列表" name="title"/>
+        <jsp:param value="班级详情" name="title"/>
     </jsp:include>
 </head>
 <body>
@@ -22,7 +22,7 @@
                     <label class="form-label col-xs-4 col-sm-3"><span
                             class="c-red">*</span>学校名称：</label>
                     <div class="form-controls col-xs-8 col-sm-9">
-                        <input type="text" class="input-text" value="" placeholder="请输入学校名称"
+                        <input type="text" class="input-text" value="${requestScope.wmGrade.wmSchoolId}" placeholder="请输入学校名称"
                                id="schoolName" name="schoolName" datatype="*4-16"
                                nullmsg="学校名称不可为空">
                     </div>
@@ -31,7 +31,7 @@
                     <label class="form-label col-xs-4 col-sm-3"><span
                             class="c-red">*</span>班级名称：</label>
                     <div class="form-controls col-xs-8 col-sm-9">
-                        <input type="text" class="input-text" value="" placeholder="请输入学校名称"
+                        <input type="text" class="input-text" value="${requestScope.wmGrade.name}" placeholder="请输入学校名称"
                                id="gradeName" name="gradeName" datatype="*4-16"
                                nullmsg="班级名称不可为空">
                     </div>
@@ -63,4 +63,15 @@
     </div>
 </div>
 </body>
+<jsp:include page="/views/admin/common/footer.jsp"></jsp:include>
+<script type="text/javascript" src="${pageContext.request.contextPath }/lib/jquery.validation/1.14.0/jquery.validate.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath }/lib/jquery.validation/1.14.0/validate-methods.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath }/lib/jquery.validation/1.14.0/messages_zh.js"></script>
+<script type="text/javascript" src="${ pageContext.request.contextPath }/static/business/js/common.js?ver=1"></script>
+
+<script>
+    $(function () {
+        $("#status").val("${requestScope.wmGrade.status}");
+    });
+</script>
 </html>

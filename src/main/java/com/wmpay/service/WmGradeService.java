@@ -17,6 +17,11 @@ public class WmGradeService {
     @Autowired
     WmGradeDAO wmGradeDAO;
 
+
+    public WmGrade getGradeById(Integer wmGradeId) {
+        return wmGradeDAO.selectById(wmGradeId);
+    }
+
     public IPage<GradeVO> getGradeList(PageTools pageTools) {
         return wmGradeDAO.selectGradeList(new Page<WmGrade>(pageTools.getStart(), pageTools.getLength()));
     }
@@ -24,6 +29,11 @@ public class WmGradeService {
     public Boolean addGrade(WmGrade wmGrade) {
         wmGrade.setUpdatedTime(new Date());
         int result = wmGradeDAO.insert(wmGrade);
+        return result > 0;
+    }
+
+    public Boolean editGrade(WmGrade wmGrade) {
+        int result = wmGradeDAO.updateById(wmGrade);
         return result > 0;
     }
 
