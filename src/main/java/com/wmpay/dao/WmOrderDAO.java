@@ -1,30 +1,16 @@
 package com.wmpay.dao;
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.wmpay.bean.WmOrder;
 import com.wmpay.bean.WmOrderExample;
 import java.util.List;
+
+import com.wmpay.common.PageTools;
 import org.apache.ibatis.annotations.Param;
 
-public interface WmOrderDAO {
-    long countByExample(WmOrderExample example);
+public interface WmOrderDAO extends BaseMapper<WmOrder> {
 
-    int deleteByExample(WmOrderExample example);
-
-    int deleteByPrimaryKey(Integer wmOrderId);
-
-    int insert(WmOrder record);
-
-    int insertSelective(WmOrder record);
-
-    List<WmOrder> selectByExample(WmOrderExample example);
-
-    WmOrder selectByPrimaryKey(Integer wmOrderId);
-
-    int updateByExampleSelective(@Param("record") WmOrder record, @Param("example") WmOrderExample example);
-
-    int updateByExample(@Param("record") WmOrder record, @Param("example") WmOrderExample example);
-
-    int updateByPrimaryKeySelective(WmOrder record);
-
-    int updateByPrimaryKey(WmOrder record);
+    IPage<WmOrder> selectPageList(Page<WmOrder> page);
 }

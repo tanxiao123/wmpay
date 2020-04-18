@@ -9,7 +9,7 @@
 <html>
 <head>
     <jsp:include page="/views/admin/common/header.jsp">
-        <jsp:param value="班级列表" name="title"/>
+        <jsp:param value="年级列表" name="title"/>
     </jsp:include>
 </head>
 <body>
@@ -17,7 +17,7 @@
     <nav class="breadcrumb"
          style="background-color: #fff; padding: 0 24px">
         首页 <span class="c-gray en">/</span> 学校管理 <span class="c-gray en">/</span>
-        班级列表 <a class="btn btn-success radius f-r"
+        年级列表 <a class="btn btn-success radius f-r"
                 style="line-height: 1.6em; margin-top: 3px"
                 href="javascript:location.replace(location.href);" title="刷新"><i
             class="Hui-iconfont">&#xe68f;</i></a>
@@ -29,7 +29,7 @@
                 <div class="text-c">
                     <form class="Huiform" method="post" action="" target="_self">
                         <input type="text" class="input-text" style="width: 250px"
-                               placeholder="学校名称" id="" name="">
+                               placeholder="年级名称" id="" name="">
                         <button type="submit" class="btn btn-success" id="" name="">
                             <i class="Hui-iconfont">&#xe665;</i> 搜索
                         </button>
@@ -41,9 +41,9 @@
             <div class="panel-body">
                 <div class="clearfix">
 						<span class="f-l"> <a href="javascript:;"
-                                              onclick="openWindow('新增班级','addGradeView.do');"
+                                              onclick="goWindow('新增年级','addGradeView.do');"
                                               class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i>
-								新增班级</a>
+								新增年级</a>
 						</span> <span class="f-r">共有数据：<strong>54</strong> 条
 						</span>
                 </div>
@@ -53,7 +53,7 @@
                             id="dataTable" data-toggle="dataTable">
                         <thead>
                         <th>ID</th>
-                        <th>班级名称</th>
+                        <th>年级名称</th>
                         <th>所属学校</th>
                         <th>状态</th>
                         <th>创建时间</th>
@@ -92,7 +92,7 @@
                 }
             },
             {
-                data: 'schoolName', sClass: 'center', render: function (data, type, row, meta) {
+                data: 'wmSchoolName', sClass: 'center', render: function (data, type, row, meta) {
                     return data == null ? '' : data;
                 }
             },
@@ -140,9 +140,9 @@
 
 
         tableCick('#del', function (data, rows) {
-            layer.confirm('是否要删除该学校？', function () {
-                $.post('delSchool.do', {
-                    wmSchoolId: data.wmSchoolId
+            layer.confirm('是否要删除该年级？', function () {
+                $.post('delGrade.do', {
+                    wmGradeId: data.wmGradeId
                 }, function (result) {
                     layer.msg(result.cusMsg);
                     tableReload();
@@ -152,7 +152,7 @@
 
         // 编辑信息
         tableCick('#edit', function (data, rows) {
-            var index = goWindow('编辑学校', 'editGradeView.do?wmSchoolId=' + data.wmSchoolId);
+            var index = goWindow('编辑年级', 'editGradeView.do?wmGradeId=' + data.wmGradeId);
             layer.full(index);
         })
     });

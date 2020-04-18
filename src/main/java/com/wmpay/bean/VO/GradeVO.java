@@ -15,7 +15,7 @@ public class GradeVO {
 
     private Date updatedTime;
 
-    private String schoolName;
+    private String wmSchoolName;
 
     public Integer getWmGradeId() {
         return wmGradeId;
@@ -65,11 +65,11 @@ public class GradeVO {
         this.updatedTime = updatedTime;
     }
 
-    public String getSchoolName() {
-        return schoolName;
+    public String getWmSchoolName() {
+        return wmSchoolName;
     }
 
-    public void setSchoolName(String schoolName) {
-        this.schoolName = schoolName;
+    public void setWmSchoolName(String wmSchoolName) {
+        this.wmSchoolName = wmSchoolName;
     }
 }

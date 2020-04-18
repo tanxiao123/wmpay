@@ -2,6 +2,14 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.wmpay.dao.WmGradeDAO">
     <select id="selectGradeList" resultType="GradeVO">
-        select * from wm_grade where status != 9
+        SELECT
+            A.*,
+            B.NAME AS wm_school_name
+        FROM
+            wm_grade AS A
+            INNER JOIN wm_school AS B ON A.wm_school_id = B.wm_school_id
+        WHERE
+            A.`status` != 9
+            AND B.`status` != 9
     </select>
 </mapper>
