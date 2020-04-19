@@ -18,8 +18,10 @@ public class WmSchoolService {
     @Autowired
     private WmSchoolDAO wmSchoolDAO;
 
+
+
     public IPage<SchoolVO> selectListPage(PageTools pageTools) {
-        return wmSchoolDAO.selectParentSchool(new Page<WmSchool>(pageTools.getStart(), pageTools.getLength()));
+        return wmSchoolDAO.selectParentSchool(new Page<WmSchool>(pageTools.getStart(), pageTools.getLength() ) );
     }
 
     /**
@@ -27,8 +29,8 @@ public class WmSchoolService {
      * @param pageTools
      * @return
      */
-    public IPage<SchoolVO> selectPointListPage(PageTools pageTools){
-        return wmSchoolDAO.selectPointSchool(new Page<WmSchool>(pageTools.getStart(), pageTools.getLength())) ;
+    public IPage<SchoolVO> selectPointListPage(PageTools pageTools, Integer wmSchoolId){
+        return wmSchoolDAO.selectPointSchool(new Page<WmSchool>(pageTools.getStart(), pageTools.getLength() ), wmSchoolId );
     }
 
     public Boolean delSchool(Integer wmSchoolId) {

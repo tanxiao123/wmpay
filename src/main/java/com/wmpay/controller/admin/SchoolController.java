@@ -61,9 +61,9 @@ public class SchoolController {
      */
     @ResponseBody
     @RequestMapping(value = "getPointSchoolList", produces = "application/json; charset=utf-8", method = RequestMethod.POST)
-    public DataTableResponse getPointSchoolList(@Validated @RequestBody PageTools pageTools) {
+    public DataTableResponse getPointSchoolList(@Validated @RequestBody PageTools pageTools, @RequestParam("wmSchoolId")Integer wmSchoolId) {
         DataTableResponse responseBean = new DataTableResponse();
-        IPage<SchoolVO> schoolList = wmSchoolService.selectPointListPage(pageTools);
+        IPage<SchoolVO> schoolList = wmSchoolService.selectPointListPage(pageTools, wmSchoolId);
         responseBean.setStatus(ResponseEnum.SUCCESS.status);
         responseBean.setCusMsg(ResponseEnum.SUCCESS.msg);
         responseBean.setTipMsg(ResponseEnum.SUCCESS.msg);
@@ -103,7 +103,9 @@ public class SchoolController {
      * @return
      */
     @RequestMapping(value = "pointSchoolView")
-    public String pointSchoolView() {
+    public String pointSchoolView(@RequestParam("wmSchoolId")Integer wmSchoolId,HttpServletRequest request, HttpServletResponse response)
+    {
+        request.setAttribute("wmSchoolId", wmSchoolId);
         return "admin/school/point/index";
     }
 

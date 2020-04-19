@@ -132,7 +132,7 @@
         ];
 
         // 初始化表格信息
-        initMainTable('getPointSchoolList.do',columns,20,1,columnDefs);
+        initMainTable('getPointSchoolList.do?wmSchoolId=${requestScope.wmSchoolId}',columns,20,1,columnDefs);
 
         tableCick('#del', function (data, rows) {
             layer.confirm('是否要删除该学校？', function () {

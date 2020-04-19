@@ -143,7 +143,9 @@
                                 <a  id="select" style="text-decoration:none;" class="ml-5" href="javascript:;" title="查看">
                                     <i class="Hui-iconfont Hui-iconfont-search"></i>查看
                                 </a><br />
-                                <a  id="addPoint" style="text-decoration:none;" class="ml-5" href="javascript:;" title="分校区管理">
+                                <a   style="text-decoration:none;"
+                                    onclick="goWindow('分校区管理','pointSchoolView.do?wmSchoolId=\${row.wmSchoolId}')"
+                                    class="ml-5" href="javascript:;" title="分校区管理">
                                     <i class="Hui-iconfont Hui-iconfont-user"></i>分校区管理
                                 </a>
                                 <a  id="payConfig" style="text-decoration:none;" class="ml-5" href="javascript:;" title="支付配置">
@@ -159,6 +161,7 @@
                                     <i class="Hui-iconfont Hui-iconfont-tags"></i>年级管理
                                 </a>
 					`;
+
                 }
             }
         ];
@@ -166,9 +169,9 @@
         // 初始化表格信息
         initMainTable('getSchoolList.do', columns, 20, 1, columnDefs);
 
-        tableCick('#addPoint', function(data, rows) {
-            openWindowArea('添加分校区','addPointSchoolView.do?wmSchoolId='+data.wmSchoolId, [400,400])
-        });
+        // tableCick('#addPoint', function(data, rows) {
+        //     openWindowArea('添加分校区','addPointSchoolView.do?wmSchoolId='+data.wmSchoolId, [400,400])
+        // });
 
         tableCick('#del', function (data, rows) {
             layer.confirm('是否要删除该学校？', function () {
