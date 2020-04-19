@@ -65,6 +65,7 @@ public class GradeController {
      * 加载添加班级视图
      * @return
      */
+    @RequestMapping(value = "addGradeView", method = RequestMethod.GET)
     public String addGradeView() {
         return "admin/grade/add";
     }

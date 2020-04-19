@@ -1,8 +1,12 @@
 package com.wmpay.bean;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
+
 import java.util.Date;
 
 public class WmOrder {
+    @TableId(value = "wm_order_id", type = IdType.AUTO)
     private Integer wmOrderId;
 
     private Integer wmPatriarchId;

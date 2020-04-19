@@ -12,7 +12,7 @@ import java.util.Date;
 public class WmGrade {
 
     @NotNull(message = "班级ID不可为空", groups = {Update.class})
-    @TableId(value = "wmGradeId", type = IdType.AUTO)
+    @TableId(value = "wm_grade_id", type = IdType.AUTO)
     private Integer wmGradeId;
 
     @NotNull(message = "学校ID不可为空")
