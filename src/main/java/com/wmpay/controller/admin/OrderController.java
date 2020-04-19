@@ -2,9 +2,12 @@ package com.wmpay.controller.admin;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.weimai.tools.ResponseBean;
+import com.wmpay.bean.VO.OrderVO;
 import com.wmpay.common.PageTools;
+import com.wmpay.service.WmOrderService;
 import com.wmpay.template.ResponseEnum;
 import com.wmpay.util.DataTableResponse;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
@@ -12,16 +15,21 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.xml.ws.Response;
 
 @Controller
 @RequestMapping("/admin/order")
 public class OrderController {
 
+
+    @Autowired
+    WmOrderService wmOrderService;
+
     /**
      * 加载订单首页
      * @return
      */
-    @RequestMapping(value = "gradeView", method = RequestMethod.GET)
+    @RequestMapping(value = "getOrderView", method = RequestMethod.GET)
     public String getOrderView() {
         return "admin/order/index";
     }
@@ -42,7 +50,13 @@ public class OrderController {
             responseBean.setTipMsg(result.getFieldError().getDefaultMessage());
             return responseBean;
         }
-
+        IPage<OrderVO> orderList = wmOrderService.getOrderList(pageTools);
+        responseBean.setStatus(ResponseEnum.SUCCESS.status);
+        responseBean.setCusMsg(ResponseEnum.SUCCESS.msg);
+        responseBean.setTipMsg(ResponseEnum.SUCCESS.msg);
+        responseBean.setData(orderList.getRecords());
+        responseBean.setRecordsTotal(orderList.getPages());
+        responseBean.setRecordsFiltered(orderList.getTotal());
         return responseBean;
     }
 

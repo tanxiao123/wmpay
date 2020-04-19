@@ -11,9 +11,14 @@
     <jsp:include page="/views/admin/common/header.jsp">
         <jsp:param value="学校列表" name="title"/>
     </jsp:include>
-    <style>
-        #dataTable tr .center:last-child ,#dataTable tr th:last-child{
-            width: 150px!important;
+
+    <style type="text/css">
+        .center{
+            text-align:center!important;
+        }
+
+        .ml-5{
+            color:#7A67EE;
         }
     </style>
 </head>
@@ -56,13 +61,13 @@
                     <table
                             class="table table-border table-bordered table-bg table-hover table-sort"
                             id="dataTable" data-toggle="dataTable">
-                        <thead>
-                        <th>ID</th>
-                        <th>所在地区</th>
-                        <th>学校名称</th>
-                        <th>状态</th>
-                        <th>创建时间</th>
-                        <th>操作</th>
+                        <thead class="text-c">
+                            <th width="15%">ID</th>
+                            <th width="15%">所在地区</th>
+                            <th width="15%">学校名称</th>
+                            <th width="15%">状态</th>
+                            <th width="15%">创建时间</th>
+                            <th width="10%">操作</th>
                         </thead>
                     </table>
                 </div>
@@ -105,7 +110,7 @@
                 data: 'status', sClass: 'center'
             },
             {
-                data: 'createdTime', sClass: 'center', render: function (data, type, row, meta) {
+                data: 'createdTime', sClass: 'center',  render: function (data, type, row, meta) {
                     return data == null ? '' : data;
                 }
             },{
@@ -129,9 +134,30 @@
                 targets: [5],
                 render: function (data, type, row) {
                     return `
-                                <a  id="addPoint" href="javascript:;" title="添加分校区">添加分校区</a>
-                                <a  id="edit" href="javascript:;" title="编辑">编辑</a>
-                                <a  id="del" href="javascript:;" title="删除">\删除</a>
+                                <a  id="edit" style="text-decoration:none;" class="ml-5" href="javascript:;" title="编辑">
+                                    <i class="Hui-iconfont"></i>编辑
+                                </a>
+                                <a  id="del" style="text-decoration:none;" class="ml-5" href="javascript:;" title="删除">
+                                    <i class="Hui-iconfont"></i>删除
+                                </a>
+                                <a  id="select" style="text-decoration:none;" class="ml-5" href="javascript:;" title="查看">
+                                    <i class="Hui-iconfont Hui-iconfont-search"></i>查看
+                                </a><br />
+                                <a  id="addPoint" style="text-decoration:none;" class="ml-5" href="javascript:;" title="分校区管理">
+                                    <i class="Hui-iconfont Hui-iconfont-user"></i>分校区管理
+                                </a>
+                                <a  id="payConfig" style="text-decoration:none;" class="ml-5" href="javascript:;" title="支付配置">
+                                    <i class="Hui-iconfont Hui-iconfont-system"></i>支付配置
+                                </a><br />
+                                <a  id="addAdditionUser" style="text-decoration:none;" class="ml-5" href="javascript:;" title="添加用户">
+                                    <i class="Hui-iconfont Hui-iconfont-user-add"></i>添加校区用户
+                                </a><br />
+                                <a  id="addAdditionUser" style="text-decoration:none;" class="ml-5" href="javascript:;" title="添加用户">
+                                    <i class="Hui-iconfont Hui-iconfont-tags"></i>年级管理
+                                </a>
+                                <a  id="addAdditionUser" style="text-decoration:none;" class="ml-5" href="javascript:;" title="添加用户">
+                                    <i class="Hui-iconfont Hui-iconfont-tags"></i>年级管理
+                                </a>
 					`;
                 }
             }

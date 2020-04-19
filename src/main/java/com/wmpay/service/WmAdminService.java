@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import com.weimai.tools.Wm;
 import com.wmpay.bean.VO.AdminVO;
+import com.wmpay.common.AdminTypeEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -96,6 +97,7 @@ public class WmAdminService {
             String saltPassword = Des.encode(salt, wmAdmin.getPassword());
             if (dbWmAdmin.getPassword().equals(saltPassword)) {
                 request.getSession().setAttribute(AdminCommon.USER_SESSION, dbWmAdmin);
+                request.getSession().setAttribute(AdminCommon.USER_TYPE, AdminTypeEnum.WM_SYSTEM_ADMIN);
                 response.setStatus(1);
                 response.setTipMsg("登录成功");
                 response.setCusMsg("登录成功");

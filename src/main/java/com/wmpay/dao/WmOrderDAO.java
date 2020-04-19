@@ -3,6 +3,7 @@ package com.wmpay.dao;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.wmpay.bean.VO.OrderVO;
 import com.wmpay.bean.WmOrder;
 import com.wmpay.bean.WmOrderExample;
 import java.util.List;
@@ -12,5 +13,5 @@ import org.apache.ibatis.annotations.Param;
 
 public interface WmOrderDAO extends BaseMapper<WmOrder> {
 
-    IPage<WmOrder> selectPageList(Page<WmOrder> page);
+    IPage<OrderVO> selectPageList(Page<WmOrder> page);
 }

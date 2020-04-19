@@ -1,6 +1,8 @@
 package com.wmpay.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.wmpay.bean.VO.OrderVO;
 import com.wmpay.bean.WmOrder;
 import com.wmpay.common.PageTools;
 import com.wmpay.dao.WmOrderDAO;
@@ -13,9 +15,8 @@ public class WmOrderService {
     @Autowired
     WmOrderDAO wmOrderDAO;
 
-    public IPage<WmOrder> getOrderList(PageTools pageTools) {
-
-        return null;
+    public IPage<OrderVO> getOrderList(PageTools pageTools) {
+        return wmOrderDAO.selectPageList(new Page<WmOrder>(pageTools.getStart(), pageTools.getLength()));
     }
 
     public Boolean deleteOrder(Integer wmOrderId) {
