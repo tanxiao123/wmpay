@@ -7,6 +7,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import com.wmpay.bean.VO.AdminVO;
+import com.wmpay.bean.WmAdditionAdmin;
+import com.wmpay.service.WmAdditionAdminService;
+import com.wmpay.util.AppResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -45,6 +48,9 @@ public class SystemController {
 
     @Autowired
     WmAuthGroupAccessService wmAuthGroupAccessService;
+
+    @Autowired
+    WmAdditionAdminService wmAdditionAdminService;
 
     /**
      * 登陆
@@ -493,5 +499,35 @@ public class SystemController {
         return responseBean;
     }
 
+    /**
+     * 加载添加代理管理员
+     * @param typeId
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "getAdditionAdminView", method = RequestMethod.GET, produces = "application/json; charset=utf-8")
+    public String getAdditionAdminView(@RequestParam("typeId")String typeId, HttpServletRequest request) {
+        request.setAttribute("typeId", typeId);
+        return "/admin/addition/add";
+    }
+
+    /**
+     * 添加代理管理员API
+     * @param wmAdditionAdmin
+     * @param result
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = "saveAdditionAdmin", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
+    public ResponseBean saveAdditionAdmin(@Validated WmAdditionAdmin wmAdditionAdmin, BindingResult result) {
+        if (result.hasErrors()) {
+            return AppResponse.error(ResponseEnum.FIELD_ERROR.status, result.getFieldError().getDefaultMessage());
+        }
+        if (wmAdditionAdminService.saveAddition(wmAdditionAdmin) ){
+            return AppResponse.success();
+        }else{
+            return AppResponse.error(ResponseEnum.ERROR);
+        }
+    }
 
 }

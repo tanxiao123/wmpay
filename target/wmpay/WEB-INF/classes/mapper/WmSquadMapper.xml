@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wmpay.dao.WmSquadDAO">
+    <select id="selectListPage" resultType="squadVO">
+        SELECT
+         C.wm_squad_id,
+         B.`name` AS grade_name,
+         C.`name` AS squad_name,
+         D.`name` AS school_name,
+         C.teacher_name,
+         C.teacher_mobile,
+         C.`status`,
+         C.created_time
+        FROM
+         wm_grade_squad AS A
+        INNER JOIN wm_grade AS B ON A.wm_grade_id = B.wm_grade_id
+        INNER JOIN wm_squad AS C ON A.wm_squad_id = C.wm_squad_id
+        INNER JOIN wm_school AS D ON B.wm_school_id = D.wm_school_id
+
+
+
+    </select>
+</mapper>

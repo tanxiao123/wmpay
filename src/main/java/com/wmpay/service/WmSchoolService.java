@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class WmSchoolService {
@@ -31,6 +32,10 @@ public class WmSchoolService {
      */
     public IPage<SchoolVO> selectPointListPage(PageTools pageTools, Integer wmSchoolId){
         return wmSchoolDAO.selectPointSchool(new Page<WmSchool>(pageTools.getStart(), pageTools.getLength() ), wmSchoolId );
+    }
+
+    public List<WmSchool> selectList() {
+        return wmSchoolDAO.selectSchoolList();
     }
 
     public Boolean delSchool(Integer wmSchoolId) {

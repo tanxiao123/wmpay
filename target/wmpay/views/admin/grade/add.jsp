@@ -69,20 +69,12 @@
 <script type="text/javascript" src="${pageContext.request.contextPath }/lib/jquery.validation/1.14.0/jquery.validate.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath }/lib/jquery.validation/1.14.0/validate-methods.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath }/lib/jquery.validation/1.14.0/messages_zh.js"></script>
-<script type="text/javascript" src="${ pageContext.request.contextPath }/static/business/js/common.js?ver=1"></script>
+<script type="text/javascript" src="${ pageContext.request.contextPath }/static/business/js/common.js?version=3"></script>
 <script>
     $(function () {
-        jsonPost('/wmpay/admin/school/getSchoolList.do',{start:1, length:999}, function(data) {
 
-            if (data.status == 1){
-                var selectHTML = "";
-                var schoolData = data.data;
-                for(var i=0; i<schoolData.length; i++){
-                    selectHTML += "<option value='"+schoolData[i].wmSchoolId+"'>"+schoolData[i].schoolName+"</option>";
-                }
-                $("#wmSchoolId").html(selectHTML);
-            }
-        });
+        var schoolStr = getSchool('${pageContext.request.contextPath }/admin/school/getSchoolListNoPage.do');
+        $("#wmSchoolId").html(schoolStr);
         // 点击编辑触发事件
         $("#form-grade-add").validate({
             rules:{

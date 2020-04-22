@@ -90,7 +90,6 @@
 <!--/请在上方写此页面业务相关的脚本-->
 <script type="text/javascript"
         src="${ pageContext.request.contextPath }/static/business/js/common.js"></script>
-<jsp:include page="/views/admin/common/footer.jsp"></jsp:include>
 <script type="text/javascript"
         src="${pageContext.request.contextPath }/lib/jquery.validation/1.14.0/jquery.validate.js"></script>
 <script type="text/javascript"

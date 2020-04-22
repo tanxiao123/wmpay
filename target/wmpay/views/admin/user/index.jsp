@@ -73,7 +73,7 @@
 		src="${ pageContext.request.contextPath }/lib/datatables/1.10.15/jquery.dataTables.min.js"></script>
 	<!--/请在上方写此页面业务相关的脚本-->
 	<script type="text/javascript"
-		src="${ pageContext.request.contextPath }/static/business/js/common.js"></script>
+		src="${ pageContext.request.contextPath }/static/business/js/common.js?version=1"></script>
 
 	<script type="text/javascript">
 		var confirmTitle = "是否要禁用管理员？";
@@ -97,10 +97,10 @@
 					return data == null ? '' : data;
 				}},
 				{data: 'createdTime', sClass: 'center', render:function(data,type,row,meta){
-					return data == null ? '' : data;
+					return data == null ? '' : timeTransitionDate(data);
 				}},
 				{data: 'updatedTime', sClass: 'center', render:function(data,type,row,meta){
-					return data == null ? '' : data;
+					return data == null ? '' : timeTransitionDate(data);
 				}}
 			];
 			

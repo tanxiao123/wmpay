@@ -8,6 +8,7 @@ import com.wmpay.common.PageTools;
 import com.wmpay.service.WmGradeService;
 import com.wmpay.template.ResponseEnum;
 import com.wmpay.template.Update;
+import com.wmpay.util.AppResponse;
 import com.wmpay.util.DataTableResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 
 @Controller
@@ -27,7 +29,7 @@ public class GradeController {
     WmGradeService wmGradeService;
 
     /**
-     * 加载班级首页
+     * 加载年级首页
      * @return
      */
     @RequestMapping(value = "gradeView", method = RequestMethod.GET)
@@ -36,7 +38,7 @@ public class GradeController {
     }
 
     /**
-     * 加载班级信息列表
+     * 加载年级信息列表
      * @param pageTools
      * @param result
      * @return
@@ -62,7 +64,7 @@ public class GradeController {
     }
 
     /**
-     * 加载添加班级视图
+     * 加载添加年级视图
      * @return
      */
     @RequestMapping(value = "addGradeView", method = RequestMethod.GET)
@@ -71,7 +73,7 @@ public class GradeController {
     }
 
     /**
-     *  添加班级
+     *  添加年级
      * @param wmGrade
      * @param result
      * @return
@@ -113,13 +115,13 @@ public class GradeController {
             request.setAttribute("wmGrade", wmGrade);
             return "admin/grade/edit";
         }else{
-            request.setAttribute("errorMessage", "抱歉，班级ID不可为空");
+            request.setAttribute("errorMessage", "抱歉，年级ID不可为空");
             return "error-500";
         }
     }
 
     /**
-     * 编辑班级API
+     * 编辑年级API
      * @param wmGrade
      * @param result
      * @return
@@ -148,7 +150,7 @@ public class GradeController {
 
 
     /**
-     * 删除班级操作
+     * 删除年级操作
      * @param wmGradeId
      * @return
      */
@@ -158,8 +160,8 @@ public class GradeController {
         ResponseBean responseBean = new ResponseBean();
         if (wmGradeId == null){
             responseBean.setStatus(ResponseEnum.FIELD_ERROR.status);
-            responseBean.setCusMsg("班级ID不可为空");
-            responseBean.setTipMsg("班级ID不可为空");
+            responseBean.setCusMsg("年级ID不可为空");
+            responseBean.setTipMsg("年级ID不可为空");
         }
 
         if (wmGradeService.delGrade(wmGradeId)){
@@ -172,6 +174,18 @@ public class GradeController {
             responseBean.setCusMsg(ResponseEnum.ERROR.msg);
         }
         return responseBean;
+    }
+
+    /**
+     * 根据学校ID查询班级列表
+     * @param wmSchoolId
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = "getGradeBySchoolId",produces = "application/json; charset=utf-8", method = RequestMethod.POST)
+    public ResponseBean getGradeBySchoolId(@RequestParam("wmSchoolId")Integer wmSchoolId) {
+        List<WmGrade> result = wmGradeService.selectGradeBySchoolId(wmSchoolId);
+        return AppResponse.success(result);
     }
 
 }

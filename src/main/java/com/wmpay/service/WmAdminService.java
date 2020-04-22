@@ -241,6 +241,7 @@ public class WmAdminService {
         int result = wmAdminDAO.insert(wmAdminServer);
         if (result > 0){
             wmAdminServer.setPassword(Des.encode(wmAdminServer.getSalt(), adminVO.getPassword() ));
+            wmAdminDAO.updateById(wmAdminServer);
             return true;
         }
         return false;

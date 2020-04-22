@@ -8,6 +8,7 @@ import com.wmpay.common.PageTools;
 import com.wmpay.service.WmSchoolService;
 import com.wmpay.template.Insert;
 import com.wmpay.template.ResponseEnum;
+import com.wmpay.util.AppResponse;
 import com.wmpay.util.DataTableResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -149,6 +150,16 @@ public class SchoolController {
     }
 
     /**
+     * 不分页获取全部的学校数据
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = "getSchoolListNoPage", produces = "application/json; charset=utf-8", method = RequestMethod.POST)
+    public ResponseBean getSchoolListNoPage() {
+        return AppResponse.success(wmSchoolService.selectList() );
+    }
+
+    /**
      * 编辑学校API
      * @param wmSchool
      * @return
@@ -196,5 +207,7 @@ public class SchoolController {
         }
         return responseBean;
     }
+
+
 
 }

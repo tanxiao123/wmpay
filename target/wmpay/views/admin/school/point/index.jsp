@@ -40,8 +40,11 @@
         <div class="panel mt-20">
             <div class="panel-body">
                 <div class="clearfix">
-                         <span class="f-r">共有数据：<strong>54</strong> 条
+                        <span class="f-l"> <a href="javascript:;" id="addPoint"
+                                          class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i>
+								添加分校区</a>
 						</span>
+                        <span class="f-r">共有数据：<strong>54</strong> 条</span>
                 </div>
                 <div class="mt-20 clearfix">
                     <table
@@ -79,22 +82,22 @@
     $(function () {
         var columns = [
             {
-                data: 'wmSchoolId', sClass: 'center', render: function(data,type,row,meta){
+                data: 'wmSchoolId', sClass: 'center', render: function (data, type, row, meta) {
                     return data == null ? '' : data;
                 }
             },
             {
-                data: 'areaName', sClass: 'center', render: function(data,type,row,meta){
+                data: 'areaName', sClass: 'center', render: function (data, type, row, meta) {
                     return data == null ? '' : data;
                 }
             },
             {
-                data: 'schoolName', sClass: 'center', render: function(data,type,row,meta){
+                data: 'schoolName', sClass: 'center', render: function (data, type, row, meta) {
                     return data == null ? '' : data;
                 }
             },
             {
-                data: 'parentName', sClass: 'center', render: function (data,type,row,meta) {
+                data: 'parentName', sClass: 'center', render: function (data, type, row, meta) {
                     return data == null ? '' : data;
                 }
             },
@@ -102,7 +105,7 @@
                 data: 'status', sClass: 'center'
             },
             {
-                data: 'createdTime', sClass: 'center', render: function(data,type,row,meta){
+                data: 'createdTime', sClass: 'center', render: function (data, type, row, meta) {
                     return data == null ? '' : data;
                 }
             }
@@ -122,7 +125,7 @@
             },
             {
                 targets: [6],
-                render: function(data, type, row) {
+                render: function (data, type, row) {
                     return `
 							<a style="text-decoration:none;margin:0 5px;" id="edit" href="javascript:;" title="编辑">编辑</a>
 							<a style="text-decoration:none;margin:0 5px;" id="del" href="javascript:;" title="删除">\删除</a>
@@ -132,7 +135,7 @@
         ];
 
         // 初始化表格信息
-        initMainTable('getPointSchoolList.do?wmSchoolId=${requestScope.wmSchoolId}',columns,20,1,columnDefs);
+        initMainTable('getPointSchoolList.do?wmSchoolId=${requestScope.wmSchoolId}', columns, 20, 1, columnDefs);
 
         tableCick('#del', function (data, rows) {
             layer.confirm('是否要删除该学校？', function () {
@@ -145,9 +148,13 @@
             })
         });
 
+        $("#addPoint").click(function() {
+            openWindowArea('添加分校区', 'addPointSchoolView.do?wmSchoolId=${requestScope.wmSchoolId}', [400, 400])
+
+        });
         // 编辑信息
-        tableCick('#edit', function (data,rows) {
-            var index = goWindow('编辑学校', 'editSchoolView.do?wmSchoolId='+data.wmSchoolId);
+        tableCick('#edit', function (data, rows) {
+            var index = goWindow('编辑学校', 'editSchoolView.do?wmSchoolId=' + data.wmSchoolId);
             layer.full(index);
         })
     });

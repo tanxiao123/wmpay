@@ -85,7 +85,7 @@
         src="${ pageContext.request.contextPath }/lib/datatables/1.10.15/jquery.dataTables.min.js"></script>
 <!--/请在上方写此页面业务相关的脚本-->
 <script type="text/javascript"
-        src="${ pageContext.request.contextPath }/static/business/js/common.js?ver=1.1"></script>
+        src="${ pageContext.request.contextPath }/static/business/js/common.js?version=1"></script>
 
 <script>
 
@@ -111,7 +111,7 @@
             },
             {
                 data: 'createdTime', sClass: 'center',  render: function (data, type, row, meta) {
-                    return data == null ? '' : data;
+                    return data == null ? '' : timeTransitionDate(data);
                 }
             },{
                 sClass: 'center'
@@ -139,20 +139,19 @@
                                 </a>
                                 <a  id="del" style="text-decoration:none;" class="ml-5" href="javascript:;" title="删除">
                                     <i class="Hui-iconfont"></i>删除
-                                </a>
-                                <a  id="select" style="text-decoration:none;" class="ml-5" href="javascript:;" title="查看">
-                                    <i class="Hui-iconfont Hui-iconfont-search"></i>查看
                                 </a><br />
                                 <a   style="text-decoration:none;"
                                     onclick="goWindow('分校区管理','pointSchoolView.do?wmSchoolId=\${row.wmSchoolId}')"
                                     class="ml-5" href="javascript:;" title="分校区管理">
                                     <i class="Hui-iconfont Hui-iconfont-user"></i>分校区管理
                                 </a>
-                                <a  id="payConfig" style="text-decoration:none;" class="ml-5" href="javascript:;" title="支付配置">
+                                <a  id="payConfig" style="text-decoration:none;" class="ml-5" href="javascript:;" title="支付配置"
+                                    onclick="goWindow('支付配置','${pageContext.request.contextPath}/admin/pay/getEditSysPayView.do?wmKeyId=\${row.wmSchoolId}')">
                                     <i class="Hui-iconfont Hui-iconfont-system"></i>支付配置
                                 </a><br />
-                                <a  id="addAdditionUser" style="text-decoration:none;" class="ml-5" href="javascript:;" title="添加用户">
-                                    <i class="Hui-iconfont Hui-iconfont-user-add"></i>添加校区用户
+                                <a  id="addAdditionUser" style="text-decoration:none;" class="ml-5" href="javascript:;" title="添加用户"
+                                    onclick="goWindow('添加校区用户','${pageContext.request.contextPath}/admin/system/getAdditionAdminView.do?typeId=1')">
+                                    <i class="Hui-iconfont Hui-iconfont-user-add" ></i>添加校区用户
                                 </a><br />
                                 <a  id="addAdditionUser" style="text-decoration:none;" class="ml-5" href="javascript:;" title="添加用户">
                                     <i class="Hui-iconfont Hui-iconfont-tags"></i>年级管理
@@ -168,10 +167,6 @@
 
         // 初始化表格信息
         initMainTable('getSchoolList.do', columns, 20, 1, columnDefs);
-
-        // tableCick('#addPoint', function(data, rows) {
-        //     openWindowArea('添加分校区','addPointSchoolView.do?wmSchoolId='+data.wmSchoolId, [400,400])
-        // });
 
         tableCick('#del', function (data, rows) {
             layer.confirm('是否要删除该学校？', function () {

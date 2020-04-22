@@ -1,5 +1,6 @@
 package com.wmpay.service;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.wmpay.bean.VO.GradeVO;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class WmGradeService {
@@ -42,4 +44,12 @@ public class WmGradeService {
         return result > 0;
     }
 
+    /**
+     * 根据学校ID查询班级
+     * @param wmSchoolId
+     * @return
+     */
+    public List<WmGrade> selectGradeBySchoolId(Integer wmSchoolId) {
+        return wmGradeDAO.selectList(new QueryWrapper<WmGrade>().eq("wm_school_id", wmSchoolId));
+    }
 }

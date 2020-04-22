@@ -180,6 +180,12 @@ function goWindow(title, url) {
 }
 
 
+function timeTransitionDate(time) {
+	var timestamp = new Date(time);
+	return timestamp.toLocaleDateString().replace(/\//g, "-") + " " + timestamp.toTimeString().substr(0, 8)
+}
+
+
 function times(str, num){
 	return num > 0 ? str += times(str, --num): '';
 }
@@ -217,4 +223,39 @@ function getArea (url) {
 		}
 	});
 	return array;
+}
+
+function getSchool(url) {
+	var opt_val = "";
+	$.ajax({
+		url: url,
+		contentType:'application/json;charset=utf-8',
+		type: 'POST',
+		async: false,
+		success: function (res) {
+			var data = res.data;
+
+			var parentArray = [], childArray = [];
+			// 分割父子级关系
+			for(var i = 0; i< data.length; i++) {
+				if (data[i].parentId == 0){
+					parentArray.push(data[i]);
+				}else{
+					childArray.push(data[i]);
+				}
+			}
+
+			var str = "&nbsp;├";
+			// 将父级与子级数组遍历进行存放
+			for(var i = 0; i< parentArray.length; i++) {
+				opt_val += "<option id='"+parentArray[i].wmSchoolId+"' value='"+parentArray[i].wmSchoolId+"'>"+parentArray[i].name+"</option>";
+				for(var j = 0; j < childArray.length; j++) {
+					if (parentArray[i].wmSchoolId == childArray[j].parentId){
+						opt_val += "<option id='"+childArray[j].wmSchoolId+"' value='"+childArray[j].wmSchoolId+"'>"+str+childArray[j].name+"</option>";
+					}
+				}
+			}
+		}
+	});
+	return opt_val;
 }

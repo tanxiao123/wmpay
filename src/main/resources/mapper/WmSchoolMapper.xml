@@ -36,4 +36,19 @@
         ORDER BY
             A.created_time DESC
     </select>
+
+    <select id="selectSchoolList" resultType="wmSchool">
+        SELECT
+            wm_school_id,
+            `name`,
+            `status`,
+            created_time,
+		    parent_id
+        FROM
+            wm_school
+        WHERE
+        `status` = 1
+        ORDER BY
+            created_time DESC
+    </select>
 </mapper>

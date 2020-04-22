@@ -1,7 +1,5 @@
 package com.wmpay.common;
 
-import org.hibernate.validator.constraints.NotBlank;
-
 import com.sun.istack.internal.NotNull;
 
 public class PageTools {

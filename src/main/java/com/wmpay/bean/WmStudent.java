@@ -5,7 +5,8 @@ import java.util.Date;
 public class WmStudent {
     private Integer wmStudentId;
 
-    private Integer wmGradeId;
+    // 班级与年级关系表主键
+    private Integer wmGradeSquadId;
 
     private String name;
 
@@ -31,12 +32,12 @@ public class WmStudent {
         this.wmStudentId = wmStudentId;
     }
 
-    public Integer getWmGradeId() {
-        return wmGradeId;
+    public Integer getWmGradeSquadId() {
+        return wmGradeSquadId;
     }
 
-    public void setWmGradeId(Integer wmGradeId) {
-        this.wmGradeId = wmGradeId;
+    public void setWmGradeSquadId(Integer wmGradeSquadId) {
+        this.wmGradeSquadId = wmGradeSquadId;
     }
 
     public String getName() {
