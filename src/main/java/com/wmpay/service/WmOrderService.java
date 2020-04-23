@@ -2,12 +2,18 @@ package com.wmpay.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.wmpay.bean.AO.CakeStatisticsAO;
+import com.wmpay.bean.AO.DayNumberStatisticsAO;
 import com.wmpay.bean.VO.OrderVO;
 import com.wmpay.bean.WmOrder;
 import com.wmpay.common.PageTools;
 import com.wmpay.dao.WmOrderDAO;
+import com.wmpay.util.DatesUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @Service
 public class WmOrderService {
@@ -23,4 +29,45 @@ public class WmOrderService {
         int result = wmOrderDAO.deleteById(wmOrderId);
         return result > 0;
     }
+
+    /**
+     * 线状图形统计数据
+     * @return
+     */
+    public DayNumberStatisticsAO selectDayNumber() {
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = DatesUtil.getEndDayOfLastMonth();
+        calendar.setTime(date);
+        return wmOrderDAO.getDayNumberStatistics(simpleDateFormat.format(date), calendar.getActualMaximum(Calendar.DAY_OF_MONTH) );
+    }
+
+    /**
+     * 饼状图形统计数据
+     * @param daysType
+     * @return
+     */
+    public CakeStatisticsAO selectCake(Integer daysType) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String dateStr = "";
+        switch (daysType){
+            case 1: // 查询今日
+                dateStr = simpleDateFormat.format(new Date());
+                break;
+            case 2: // 查询7天以内的数据
+                Date beginDayOfWeek = DatesUtil.getBeginDayOfWeek();
+                dateStr = simpleDateFormat.format(beginDayOfWeek);
+                break;
+            case 3: // 查询30天以内的数据
+                Date beginDayOfMonth = DatesUtil.getBeginDayOfMonth();
+                dateStr = simpleDateFormat.format(beginDayOfMonth);
+                break;
+            case 4:
+                Date beginDayOfYear = DatesUtil.getBeginDayOfYear();
+                dateStr = simpleDateFormat.format(beginDayOfYear);
+                break;
+        }
+        return wmOrderDAO.getStatisticsCake(dateStr);
+    }
+
 }

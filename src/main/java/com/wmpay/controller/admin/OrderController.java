@@ -2,10 +2,12 @@ package com.wmpay.controller.admin;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.weimai.tools.ResponseBean;
+import com.wmpay.bean.AO.DayNumberStatisticsAO;
 import com.wmpay.bean.VO.OrderVO;
 import com.wmpay.common.PageTools;
 import com.wmpay.service.WmOrderService;
 import com.wmpay.template.ResponseEnum;
+import com.wmpay.util.AppResponse;
 import com.wmpay.util.DataTableResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.xml.ws.Response;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/admin/order")
@@ -79,5 +82,30 @@ public class OrderController {
             return responseBean;
         }
         return responseBean;
+    }
+
+    /**
+     * 加载订单统计视图
+     * @return String
+     */
+    @RequestMapping(value = "getStatisticsView", method = RequestMethod.GET)
+    public String getStatisticsView() {
+        return "/admin/order/statistics";
+    }
+
+
+    /**
+     * 获取统计数据
+     * @return ResponseBean
+     */
+    @ResponseBody
+    @RequestMapping(value = "getDayNumberStatistics", produces = "application/json; charset=utf-8", method = RequestMethod.POST)
+    public ResponseBean getDayNumberStatistics() {
+        DayNumberStatisticsAO result = wmOrderService.selectDayNumber();
+        return AppResponse.success(result);
+    }
+
+    public ResponseBean getCakeStatistics(@RequestParam("daysType") String daysType) {
+        return AppResponse.success();
     }
 }
