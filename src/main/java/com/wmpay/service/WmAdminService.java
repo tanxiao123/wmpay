@@ -230,7 +230,7 @@ public class WmAdminService {
      * @param adminVO
      * @return
      */
-    public Boolean addAdminInfo(AdminVO adminVO) {
+    public Integer addAdminInfo(AdminVO adminVO) {
         WmAdmin wmAdminServer = new WmAdmin();
         wmAdminServer.setUsername(adminVO.getUsername());
         wmAdminServer.setNickname(adminVO.getNickname());
@@ -241,10 +241,10 @@ public class WmAdminService {
         int result = wmAdminDAO.insert(wmAdminServer);
         if (result > 0){
             wmAdminServer.setPassword(Des.encode(wmAdminServer.getSalt(), adminVO.getPassword() ));
-            wmAdminDAO.updateById(wmAdminServer);
-            return true;
+            int updateResult = wmAdminDAO.updateById(wmAdminServer);
+            return updateResult > 0 ? wmAdminServer.getWmAdminId() : 0; // TODO: 如果添加用户  并修改密码成功后返回 新增用户的主键
         }
-        return false;
+        return 0;
     }
 
 }

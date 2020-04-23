@@ -131,12 +131,14 @@
 
 
     $(function () {
-        $.post("getStatisticsData.do",function(res){
+        // 加载饼状图接口
+        $.post("getCakeStatistics.do", function(res){
             var data = res.data;
-            var cakeStatistics = data.cakeStatistics;
-            var dayNumberStatistics = data.dayNumberStatistics;
-            initCake(cakeStatistics.countOrder, cakeStatistics.successOrder, cakeStatistics.failOrder);
-
+            initCake(data.countOrder, data.successOrder, data.failOrder);
+        });
+        // 加载线状图
+        $.post("getStatisticsData.do",function(res){
+            var dayNumberStatistics = res.data;
             var createTime = [], data1 = [], data2 = [];
 
             for(var i = 0; i< dayNumberStatistics.length; i++ ) {

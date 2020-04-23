@@ -39,7 +39,7 @@
                     count(wm_order_id)
                 FROM
                     wm_order
-                <if test="days != null">
+                <if test="days != ''">
                     WHERE  DATE_FORMAT(created_time, '%Y-%m-%d') >= DATE_FORMAT(#{days}, '%Y-%m-%d')
                 </if>
             ) AS countOrder,
@@ -50,7 +50,7 @@
                     wm_order
                 WHERE
                     `status` = 1
-                    <if test="days != null">
+                    <if test="days != ''">
                         AND DATE_FORMAT(created_time, '%Y-%m-%d') >= DATE_FORMAT(#{days}, '%Y-%m-%d')
                     </if>
             ) AS successOrder,
@@ -61,7 +61,7 @@
                     wm_order
                 WHERE
                     `status` = 0
-                    <if test="days != null">
+                    <if test="days != ''">
                         AND DATE_FORMAT(created_time, '%Y-%m-%d') >= DATE_FORMAT(#{days}, '%Y-%m-%d')
                     </if>
             ) AS failOrder,
@@ -72,7 +72,7 @@
                     wm_order
                 WHERE
                     `status` = 1
-                <if test="days != null">
+                <if test="days != ''">
                     AND DATE_FORMAT(created_time, '%Y-%m-%d') >= DATE_FORMAT(#{days}, '%Y-%m-%d')
                 </if>
             ) AS sumSuccessTotalFee,
@@ -88,7 +88,7 @@
                     wm_order
                 WHERE
                     `status` = 0
-                <if test="days != null">
+                <if test="days != ''">
                     AND DATE_FORMAT(created_time, '%Y-%m-%d') >= DATE_FORMAT(#{days}, '%Y-%m-%d')
                 </if>
             ) AS sumFailTotalFee

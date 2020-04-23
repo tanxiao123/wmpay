@@ -95,7 +95,7 @@ public class OrderController {
 
 
     /**
-     * 获取统计数据
+     * 获取线性统计数据
      * @return ResponseBean
      */
     @ResponseBody
@@ -105,7 +105,12 @@ public class OrderController {
         return AppResponse.success(result);
     }
 
-    public ResponseBean getCakeStatistics(@RequestParam("daysType") String daysType) {
-        return AppResponse.success();
+    /**
+     * 获取饼状统计数据
+     * @param daysType
+     * @return
+     */
+    public ResponseBean getCakeStatistics(@RequestParam("daysType") Integer daysType) {
+        return AppResponse.success(wmOrderService.selectCake(daysType) );
     }
 }

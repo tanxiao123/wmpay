@@ -8,6 +8,7 @@ import javax.validation.Valid;
 
 import com.wmpay.bean.VO.AdminVO;
 import com.wmpay.bean.WmAdditionAdmin;
+import com.wmpay.common.AdminTypeEnum;
 import com.wmpay.service.WmAdditionAdminService;
 import com.wmpay.util.AppResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -71,6 +72,18 @@ public class SystemController {
         } else {
             return wmAdminService.login(wmAdmin);
         }
+    }
+
+    /**
+     * 退出登陆操作
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "doLoginOut", method = RequestMethod.GET)
+    public String doLoginOut(HttpServletRequest request) {
+        request.getSession().setAttribute(AdminCommon.USER_SESSION, null);
+        request.getSession().setAttribute(AdminCommon.USER_TYPE, null);
+        return "redirect:/admin/index.do";
     }
 
     /**
@@ -481,9 +494,10 @@ public class SystemController {
             responseBean.setTipMsg(result.getFieldError().getDefaultMessage());
             return responseBean;
         }
-        if (wmAdminService.addAdminInfo(adminVO)) {
+        int inertResult = wmAdminService.addAdminInfo(adminVO);
+        if (inertResult > 0) {
             WmAuthGroupAccess groupAccess = new WmAuthGroupAccess();
-            groupAccess.setWmAdminId(adminVO.getWmAdminId());
+            groupAccess.setWmAdminId(inertResult);
             groupAccess.setWmAuthGroupId(adminVO.getRuleId());
             if (wmAuthGroupAccessService.insertGroup(groupAccess)){
                 responseBean.setStatus(ResponseEnum.SUCCESS.status);
