@@ -37,7 +37,7 @@ import com.wmpay.template.ResponseEnum;
 import com.wmpay.template.Update;
 import com.wmpay.util.DataTableResponse;
 
-@Controller
+@Controller("admin")
 @RequestMapping("/admin/system")
 public class SystemController {
 

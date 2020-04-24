@@ -4,6 +4,7 @@ import com.alibaba.fastjson.annotation.JSONField;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableLogic;
+import com.wmpay.template.Insert;
 import org.hibernate.validator.constraints.NotBlank;
 
 import java.util.Date;
@@ -17,10 +18,12 @@ public class WmAdditionAdmin {
 
     private Integer wmWechatPayConfigId;
 
+    private Integer userId;
+
     @NotBlank(message = "用户名不可为空")
     private String username;
 
-    @NotBlank(message = "昵称不可为空")
+    @NotBlank(message = "昵称不可为空", groups = {Insert.class})
     private String nickname;
 
     @NotBlank(message = "密码不可为空")
@@ -59,6 +62,14 @@ public class WmAdditionAdmin {
 
     public Integer getWmThirdPayConfigId() {
         return wmThirdPayConfigId;
+    }
+
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 
     public void setWmThirdPayConfigId(Integer wmThirdPayConfigId) {

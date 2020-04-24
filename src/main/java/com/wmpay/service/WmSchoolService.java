@@ -4,12 +4,16 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.weimai.tools.Wm;
 import com.wmpay.bean.VO.SchoolVO;
+import com.wmpay.bean.WmAdditionAdmin;
 import com.wmpay.bean.WmSchool;
+import com.wmpay.common.AdminCommon;
+import com.wmpay.common.AdminTypeEnum;
 import com.wmpay.common.PageTools;
 import com.wmpay.dao.WmSchoolDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.List;
 
@@ -19,10 +23,21 @@ public class WmSchoolService {
     @Autowired
     private WmSchoolDAO wmSchoolDAO;
 
+    @Autowired
+    private HttpServletRequest request;
+
 
 
     public IPage<SchoolVO> selectListPage(PageTools pageTools) {
-        return wmSchoolDAO.selectParentSchool(new Page<WmSchool>(pageTools.getStart(), pageTools.getLength() ) );
+        Integer adminId = null;
+        // 验证订单权限
+        AdminTypeEnum adminType = ((AdminTypeEnum)request.getSession().getAttribute(AdminCommon.USER_TYPE));
+        switch (adminType){
+            case WM_ADDITION_ADMIN:
+                WmAdditionAdmin admin =  ((WmAdditionAdmin)request.getSession().getAttribute(AdminCommon.USER_SESSION));
+                adminId = admin.getWmAdditionAdminId();
+        }
+        return wmSchoolDAO.selectParentSchool(new Page<WmSchool>(pageTools.getStart(), pageTools.getLength() ), adminId );
     }
 
     /**

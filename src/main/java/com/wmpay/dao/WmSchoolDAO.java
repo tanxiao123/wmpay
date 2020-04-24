@@ -11,7 +11,7 @@ import java.util.List;
 
 public interface WmSchoolDAO extends BaseMapper<WmSchool> {
 
-    IPage<SchoolVO> selectParentSchool(Page<WmSchool> page);
+    IPage<SchoolVO> selectParentSchool(Page<WmSchool> page, @Param("adminId")Integer adminId);
 
     IPage<SchoolVO> selectPointSchool(Page<WmSchool> page, @Param("wmSchoolId")Integer wmSchoolId);
 

@@ -5,13 +5,17 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.wmpay.bean.AO.CakeStatisticsAO;
 import com.wmpay.bean.AO.DayNumberStatisticsAO;
 import com.wmpay.bean.VO.OrderVO;
+import com.wmpay.bean.WmAdditionAdmin;
 import com.wmpay.bean.WmOrder;
+import com.wmpay.common.AdminCommon;
+import com.wmpay.common.AdminTypeEnum;
 import com.wmpay.common.PageTools;
 import com.wmpay.dao.WmOrderDAO;
 import com.wmpay.util.DatesUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -21,8 +25,19 @@ public class WmOrderService {
     @Autowired
     WmOrderDAO wmOrderDAO;
 
+    @Autowired
+    HttpServletRequest request;
+
     public IPage<OrderVO> getOrderList(PageTools pageTools) {
-        return wmOrderDAO.selectPageList(new Page<WmOrder>(pageTools.getStart(), pageTools.getLength()));
+        Integer adminId = null;
+        // 验证订单权限
+        AdminTypeEnum adminType = ((AdminTypeEnum)request.getSession().getAttribute(AdminCommon.USER_TYPE));
+        switch (adminType){
+            case WM_ADDITION_ADMIN:
+                WmAdditionAdmin admin =  ((WmAdditionAdmin)request.getSession().getAttribute(AdminCommon.USER_SESSION));
+                adminId = admin.getWmAdditionAdminId();
+        }
+        return wmOrderDAO.selectPageList(new Page<WmOrder>(pageTools.getStart(), pageTools.getLength()), adminId);
     }
 
     public Boolean deleteOrder(Integer wmOrderId) {
@@ -34,12 +49,23 @@ public class WmOrderService {
      * 线状图形统计数据
      * @return
      */
-    public DayNumberStatisticsAO selectDayNumber() {
+    public List<List<HashMap<String, Object>>> selectDayNumber() {
+        Integer adminId = null;
+        // 验证订单权限
+        AdminTypeEnum adminType = ((AdminTypeEnum)request.getSession().getAttribute(AdminCommon.USER_TYPE));
+        switch (adminType){
+            case WM_ADDITION_ADMIN:
+                WmAdditionAdmin admin =  ((WmAdditionAdmin)request.getSession().getAttribute(AdminCommon.USER_SESSION));
+                adminId = admin.getWmAdditionAdminId();
+        }
+
         Calendar calendar = Calendar.getInstance();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         Date date = DatesUtil.getEndDayOfLastMonth();
         calendar.setTime(date);
-        return wmOrderDAO.getDayNumberStatistics(simpleDateFormat.format(date), calendar.getActualMaximum(Calendar.DAY_OF_MONTH) );
+        List<List<HashMap<String, Object>>> dayNumberStatistics = wmOrderDAO.
+                getDayNumberStatistics(simpleDateFormat.format(date), calendar.getActualMaximum(Calendar.DAY_OF_MONTH), adminId);
+        return dayNumberStatistics;
     }
 
     /**
@@ -48,6 +74,16 @@ public class WmOrderService {
      * @return
      */
     public CakeStatisticsAO selectCake(Integer daysType) {
+        Integer adminId = null;
+        // 验证订单权限
+        AdminTypeEnum adminType = ((AdminTypeEnum)request.getSession().getAttribute(AdminCommon.USER_TYPE));
+        switch (adminType){
+            case WM_ADDITION_ADMIN:
+                WmAdditionAdmin admin =  ((WmAdditionAdmin)request.getSession().getAttribute(AdminCommon.USER_SESSION));
+                adminId = admin.getWmAdditionAdminId();
+        }
+
+
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         String dateStr = "";
         switch (daysType){
@@ -67,7 +103,7 @@ public class WmOrderService {
                 dateStr = simpleDateFormat.format(beginDayOfYear);
                 break;
         }
-        return wmOrderDAO.getStatisticsCake(dateStr);
+        return wmOrderDAO.getStatisticsCake(dateStr, adminId);
     }
 
 }

@@ -27,9 +27,12 @@
             INNER JOIN wm_order_type AS C ON A.wm_order_type_id = C.wm_order_type_id
             WHERE
                 A.`status` = '1'
+                <if test="adminId != null">
+                    AND A.wm_addition_admin_id = #{adminId}
+                </if>
     </select>
-    <select id="getDayNumberStatistics" resultType="dayNumberStatisticsAO">
-        call wm_day_number_statistics(#{mathTime}, #{days})
+    <select id="getDayNumberStatistics" resultMap="dayNumberResultMap">
+        call wm_day_number_statistics(#{mathTime}, #{days}, #{adminId})
     </select>
 
     <select id="getStatisticsCake" resultType="cakeStatisticsAO">
@@ -39,9 +42,14 @@
                     count(wm_order_id)
                 FROM
                     wm_order
-                <if test="days != ''">
-                    WHERE  DATE_FORMAT(created_time, '%Y-%m-%d') >= DATE_FORMAT(#{days}, '%Y-%m-%d')
-                </if>
+                    <where>
+                        <if test="days != ''">
+                            AND  DATE_FORMAT(created_time, '%Y-%m-%d') >= DATE_FORMAT(#{days}, '%Y-%m-%d')
+                        </if>
+                        <if test="adminId != null">
+                            AND wm_addition_admin_id = #{adminId}
+                        </if>
+                    </where>
             ) AS countOrder,
             (
                 SELECT
@@ -52,6 +60,9 @@
                     `status` = 1
                     <if test="days != ''">
                         AND DATE_FORMAT(created_time, '%Y-%m-%d') >= DATE_FORMAT(#{days}, '%Y-%m-%d')
+                    </if>
+                    <if test="adminId != null">
+                        AND wm_addition_admin_id = #{adminId}
                     </if>
             ) AS successOrder,
             (
@@ -64,6 +75,9 @@
                     <if test="days != ''">
                         AND DATE_FORMAT(created_time, '%Y-%m-%d') >= DATE_FORMAT(#{days}, '%Y-%m-%d')
                     </if>
+                    <if test="adminId != null">
+                        AND wm_addition_admin_id = #{adminId}
+                    </if>
             ) AS failOrder,
             (
                 SELECT
@@ -74,6 +88,9 @@
                     `status` = 1
                 <if test="days != ''">
                     AND DATE_FORMAT(created_time, '%Y-%m-%d') >= DATE_FORMAT(#{days}, '%Y-%m-%d')
+                </if>
+                <if test="adminId != null">
+                    AND wm_addition_admin_id = #{adminId}
                 </if>
             ) AS sumSuccessTotalFee,
             (
@@ -90,6 +107,9 @@
                     `status` = 0
                 <if test="days != ''">
                     AND DATE_FORMAT(created_time, '%Y-%m-%d') >= DATE_FORMAT(#{days}, '%Y-%m-%d')
+                </if>
+                <if test="adminId != null">
+                    AND wm_addition_admin_id = #{adminId}
                 </if>
             ) AS sumFailTotalFee
     </select>

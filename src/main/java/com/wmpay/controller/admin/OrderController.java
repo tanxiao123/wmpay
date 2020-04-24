@@ -101,8 +101,7 @@ public class OrderController {
     @ResponseBody
     @RequestMapping(value = "getDayNumberStatistics", produces = "application/json; charset=utf-8", method = RequestMethod.POST)
     public ResponseBean getDayNumberStatistics() {
-        DayNumberStatisticsAO result = wmOrderService.selectDayNumber();
-        return AppResponse.success(result);
+        return AppResponse.success(wmOrderService.selectDayNumber());
     }
 
     /**
@@ -110,6 +109,8 @@ public class OrderController {
      * @param daysType
      * @return
      */
+    @ResponseBody
+    @RequestMapping(value = "getCakeStatistics", produces = "application/json; charset=utf-8", method = RequestMethod.POST)
     public ResponseBean getCakeStatistics(@RequestParam("daysType") Integer daysType) {
         return AppResponse.success(wmOrderService.selectCake(daysType) );
     }

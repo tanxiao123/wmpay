@@ -87,7 +87,6 @@ public class WmAdminService {
         QueryWrapper<WmAdmin> queryAdmin = new QueryWrapper<WmAdmin>();
         queryAdmin.eq("username", wmAdmin.getUsername());
         WmAdmin dbWmAdmin = wmAdminDAO.selectOne(queryAdmin);
-        System.out.println(Des.encode("AdminOKO", wmAdmin.getPassword()));
         if (dbWmAdmin == null) {
             response.setStatus(-1);
             response.setTipMsg("登录失败，无当前用户");
@@ -95,7 +94,7 @@ public class WmAdminService {
         } else {
             String salt = dbWmAdmin.getSalt();
             String saltPassword = Des.encode(salt, wmAdmin.getPassword());
-            if (dbWmAdmin.getPassword().equals(saltPassword)) {
+            if (dbWmAdmin.getPassword() != null && dbWmAdmin.getPassword().equals(saltPassword)) {
                 request.getSession().setAttribute(AdminCommon.USER_SESSION, dbWmAdmin);
                 request.getSession().setAttribute(AdminCommon.USER_TYPE, AdminTypeEnum.WM_SYSTEM_ADMIN);
                 response.setStatus(1);

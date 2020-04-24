@@ -34,11 +34,11 @@
                                     <div class="row">
                                         <div class="col-sm-12 Hui-admin-datatime-tag"
                                              style="text-align:right;padding-bottom: 20px;">
-                                            <span class="active">今天</span>
-                                            <span>7天</span>
-                                            <span>30天</span>
-                                            <span>1年</span>
-                                            <span>全部</span>
+                                            <span class="active" onclick="getCakeData(1);thisCakeClick(this);">今天</span>
+                                            <span onclick="getCakeData(2);thisCakeClick(this);">7天</span>
+                                            <span onclick="getCakeData(3);thisCakeClick(this);">30天</span>
+                                            <span onclick="getCakeData(4);thisCakeClick(this);">1年</span>
+                                            <span onclick="getCakeData(0);thisCakeClick(this);">全部</span>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -129,15 +129,24 @@
         noTurnover.setOption(noTurnoverOption)
     }
 
-
-    $(function () {
-        // 加载饼状图接口
-        $.post("getCakeStatistics.do", function(res){
+    function getCakeData(dayType) {
+        $.post("getCakeStatistics.do?daysType="+dayType, function(res){
             var data = res.data;
             initCake(data.countOrder, data.successOrder, data.failOrder);
         });
+    }
+
+    function thisCakeClick(obj) {
+        $("span").removeClass("active");
+        $(obj).addClass("active")
+    }
+
+
+    $(function () {
+        // 加载饼状图接口
+        getCakeData(1);
         // 加载线状图
-        $.post("getStatisticsData.do",function(res){
+        $.post("getDayNumberStatistics.do",function(res){
             var dayNumberStatistics = res.data;
             var createTime = [], data1 = [], data2 = [];
 

@@ -17,9 +17,15 @@ import org.apache.ibatis.annotations.Param;
 
 public interface WmOrderDAO extends BaseMapper<WmOrder> {
 
-    IPage<OrderVO> selectPageList(Page<WmOrder> page);
+    /**
+     * 分权限查询订单信息
+     * @param page
+     * @param adminId
+     * @return
+     */
+    IPage<OrderVO> selectPageList(Page<WmOrder> page, @Param("adminId")Integer adminId);
 
-    DayNumberStatisticsAO getDayNumberStatistics(@Param("mathTime")String mathTime, @Param("days")Integer days);
+    List<List<HashMap<String,Object>>> getDayNumberStatistics(@Param("mathTime")String mathTime, @Param("days")Integer days, @Param("adminId")Integer adminId);
 
-    CakeStatisticsAO getStatisticsCake(@Param("days")String days);
+    CakeStatisticsAO getStatisticsCake(@Param("days")String days, @Param("adminId")Integer adminId);
 }

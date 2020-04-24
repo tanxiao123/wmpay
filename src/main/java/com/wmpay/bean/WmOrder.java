@@ -13,6 +13,8 @@ public class WmOrder {
 
     private Integer wmOrderTypeId;
 
+    private Integer wmAdditionAdminId;
+
     private String outTradeNo;
 
     private String transactionId;
@@ -51,6 +53,14 @@ public class WmOrder {
 
     public void setWmOrderTypeId(Integer wmOrderTypeId) {
         this.wmOrderTypeId = wmOrderTypeId;
+    }
+
+    public Integer getWmAdditionAdminId() {
+        return wmAdditionAdminId;
+    }
+
+    public void setWmAdditionAdminId(Integer wmAdditionAdminId) {
+        this.wmAdditionAdminId = wmAdditionAdminId;
     }
 
     public String getOutTradeNo() {

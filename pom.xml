@@ -8,12 +8,12 @@
     <name>wmpay Maven Webapp</name>
     <url>http://maven.apache.org</url>
 
-<!--    <repositories>-->
-<!--        <repository>-->
-<!--            <id>jitpack.io</id>-->
-<!--            <url>https://www.jitpack.io</url>-->
-<!--        </repository>-->
-<!--    </repositories>-->
+    <repositories>
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://www.jitpack.io</url>
+        </repository>
+    </repositories>
 
     <dependencies>
         <!-- spring(web)MVC spring  -->
@@ -182,11 +182,11 @@
 
 
         <!--引用斑马汇SDK -->
-<!--        <dependency>-->
-<!--            <groupId>com.github.winwin-inc</groupId>-->
-<!--            <artifactId>pay-java-sdk</artifactId>-->
-<!--            <version>v0.1.3</version>-->
-<!--        </dependency>-->
+        <dependency>
+            <groupId>com.github.winwin-inc</groupId>
+            <artifactId>pay-java-sdk</artifactId>
+            <version>v0.1.3</version>
+        </dependency>
 
 
     </dependencies>
