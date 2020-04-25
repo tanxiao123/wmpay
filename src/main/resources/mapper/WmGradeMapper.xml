@@ -11,5 +11,11 @@
         WHERE
             A.`status` != 9
             AND B.`status` != 9
+            <if test="gradeId != null">
+                AND A.wm_grade_id = #{gradeId}
+            </if>
+            <if test="schoolId != null">
+                AND A.wm_school_id = #{schoolId}
+            </if>
     </select>
 </mapper>

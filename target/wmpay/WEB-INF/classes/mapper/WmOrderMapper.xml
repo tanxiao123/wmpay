@@ -2,25 +2,118 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.wmpay.dao.WmOrderDAO">
 
-  <select id="selectPageList" resultType="orderVO">
-       SELECT
-            A.wm_order_id,
-            B.`name` as wm_patriarch_name,
-            C.title as pay_type_name,
-            A.wm_patriarch_id,
-            A.wm_order_type_id,
-            A.out_trade_no,
-            A.transaction_id,
-            A.body,
-            A.total_fee,
-            A.spbill_create_ip,
-            A.created_time
-        FROM
-            wm_order AS A
-        INNER JOIN wm_patriarch AS B ON A.wm_patriarch_id = B.wm_patriarch_id
-        INNER JOIN wm_order_type AS C ON A.wm_order_type_id = C.wm_order_type_id
-        WHERE
-            A.`status` = '1'
-  </select>
+    <resultMap id="dayNumberResultMap" type="hashMap">
+        <result property="createTime" column="createTime"></result>
+        <result property="number" column="number"></result>
+        <result property="totalFee" column="totalFee"></result>
+    </resultMap>
+
+    <select id="selectPageList" resultType="orderVO">
+        SELECT
+                A.wm_order_id,
+                B.`name` as wm_patriarch_name,
+                C.title as pay_type_name,
+                A.wm_patriarch_id,
+                A.wm_order_type_id,
+                A.out_trade_no,
+                A.transaction_id,
+                A.body,
+                A.total_fee,
+                A.spbill_create_ip,
+                A.created_time
+            FROM
+                wm_order AS A
+            INNER JOIN wm_patriarch AS B ON A.wm_patriarch_id = B.wm_patriarch_id
+            INNER JOIN wm_order_type AS C ON A.wm_order_type_id = C.wm_order_type_id
+            WHERE
+                A.`status` = '1'
+                <if test="adminId != null">
+                    AND A.wm_addition_admin_id = #{adminId}
+                </if>
+    </select>
+    <select id="getDayNumberStatistics" resultMap="dayNumberResultMap">
+        call wm_day_number_statistics(#{mathTime}, #{days}, #{adminId})
+    </select>
+
+    <select id="getStatisticsCake" resultType="cakeStatisticsAO">
+        SELECT
+            (
+                SELECT
+                    count(wm_order_id)
+                FROM
+                    wm_order
+                    <where>
+                        <if test="days != ''">
+                            AND  DATE_FORMAT(created_time, '%Y-%m-%d') >= DATE_FORMAT(#{days}, '%Y-%m-%d')
+                        </if>
+                        <if test="adminId != null">
+                            AND wm_addition_admin_id = #{adminId}
+                        </if>
+                    </where>
+            ) AS countOrder,
+            (
+                SELECT
+                    count(wm_order_id)
+                FROM
+                    wm_order
+                WHERE
+                    `status` = 1
+                    <if test="days != ''">
+                        AND DATE_FORMAT(created_time, '%Y-%m-%d') >= DATE_FORMAT(#{days}, '%Y-%m-%d')
+                    </if>
+                    <if test="adminId != null">
+                        AND wm_addition_admin_id = #{adminId}
+                    </if>
+            ) AS successOrder,
+            (
+                SELECT
+                    count(wm_order_id)
+                FROM
+                    wm_order
+                WHERE
+                    `status` = 0
+                    <if test="days != ''">
+                        AND DATE_FORMAT(created_time, '%Y-%m-%d') >= DATE_FORMAT(#{days}, '%Y-%m-%d')
+                    </if>
+                    <if test="adminId != null">
+                        AND wm_addition_admin_id = #{adminId}
+                    </if>
+            ) AS failOrder,
+            (
+                SELECT
+                    sum(total_fee)
+                FROM
+                    wm_order
+                WHERE
+                    `status` = 1
+                <if test="days != ''">
+                    AND DATE_FORMAT(created_time, '%Y-%m-%d') >= DATE_FORMAT(#{days}, '%Y-%m-%d')
+                </if>
+                <if test="adminId != null">
+                    AND wm_addition_admin_id = #{adminId}
+                </if>
+            ) AS sumSuccessTotalFee,
+            (
+                SELECT
+                    CASE
+                WHEN sum(total_fee) IS NULL THEN
+                    0
+                ELSE
+                    sum(total_fee)
+                END
+                FROM
+                    wm_order
+                WHERE
+                    `status` = 0
+                <if test="days != ''">
+                    AND DATE_FORMAT(created_time, '%Y-%m-%d') >= DATE_FORMAT(#{days}, '%Y-%m-%d')
+                </if>
+                <if test="adminId != null">
+                    AND wm_addition_admin_id = #{adminId}
+                </if>
+            ) AS sumFailTotalFee
+    </select>
+
+
 
 </mapper>

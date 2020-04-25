@@ -4,14 +4,18 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.wmpay.bean.AO.SquadAO;
 import com.wmpay.bean.VO.SquadVO;
+import com.wmpay.bean.WmAdditionAdmin;
 import com.wmpay.bean.WmGradeSquad;
 import com.wmpay.bean.WmSquad;
+import com.wmpay.common.AdminCommon;
+import com.wmpay.common.AdminTypeEnum;
 import com.wmpay.common.PageTools;
 import com.wmpay.dao.WmGradeSquadDAO;
 import com.wmpay.dao.WmSquadDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 
 
@@ -24,13 +28,32 @@ public class WmSquadService {
     @Autowired
     private WmGradeSquadDAO wmGradeSquadDAO;
 
+    @Autowired
+    private HttpServletRequest request;
+
     /**
      * 获取班级列表
      * @param pageTools
      * @return
      */
     public IPage<SquadVO> selectWmSquadList(PageTools pageTools) {
-        return wmSquadDAO.selectListPage(new Page<SquadVO>(pageTools.getStart(), pageTools.getLength() ) );
+        Integer squadId = null;
+        Integer schoolId = null;
+        Integer gradeId = null;
+        // 验证年级权限
+        AdminTypeEnum adminType = ((AdminTypeEnum)request.getSession().getAttribute(AdminCommon.USER_TYPE) );
+        switch (adminType){
+            case WM_ADDITION_ADMIN:
+                WmAdditionAdmin admin =  ((WmAdditionAdmin)request.getSession().getAttribute(AdminCommon.USER_SESSION));
+                // TODO: 查询当前用户等级是否为班级  如果为班级 那么只查询该班级的信息 如为
+                if (admin.getType() != null){
+                    squadId = admin.getUserId();
+                }else{
+                    return null;
+                }
+                break;
+        }
+        return wmSquadDAO.selectListPage(new Page<SquadVO>(pageTools.getStart(), pageTools.getLength() ),squadId, gradeId, schoolId );
     }
 
     /**

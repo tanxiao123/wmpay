@@ -160,12 +160,6 @@
                                     onclick="goWindow('添加校区用户','${pageContext.request.contextPath}/admin/system/getAdditionAdminView.do?typeId=1')">
                                     <i class="Hui-iconfont Hui-iconfont-user-add" ></i>添加校区用户
                                 </a><br />
-                                <a  id="addAdditionUser" style="text-decoration:none;" class="ml-5" href="javascript:;" title="添加用户">
-                                    <i class="Hui-iconfont Hui-iconfont-tags"></i>年级管理
-                                </a>
-                                <a  id="addAdditionUser" style="text-decoration:none;" class="ml-5" href="javascript:;" title="添加用户">
-                                    <i class="Hui-iconfont Hui-iconfont-tags"></i>年级管理
-                                </a>
 					`;
 
                 }

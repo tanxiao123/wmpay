@@ -14,6 +14,9 @@
             WHERE
             B.`status` = 1
             AND A.parent_id = 0
+            <if test="schoolId != null">
+            AND A.wm_school_id = #{schoolId}
+            </if>
             ORDER BY
                 A.created_time DESC
       </select>

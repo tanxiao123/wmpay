@@ -1,4 +1,5 @@
-<%--
+<%@ page import="com.wmpay.common.AdminCommon" %>
+<%@ page import="com.wmpay.common.AdminTypeEnum" %><%--
   Created by IntelliJ IDEA.
   User: Administrator
   Date: 2020-04-13
@@ -49,7 +50,8 @@
         </div>
         <div class="panel mt-20">
             <div class="panel-body">
-                <div class="clearfix">
+
+                <div class="clearfix" id="add-admin-div" style="display: none;">
 						<span class="f-l"> <a href="javascript:;"
                                               onclick="openWindowArea('新增学校','addSchoolView.do',[400,300]);"
                                               class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i>
@@ -90,6 +92,11 @@
 <script>
 
     $(function () {
+
+        // 设置管理员权限可添加操作
+        if ("<%=((AdminTypeEnum)request.getSession().getAttribute(AdminCommon.USER_TYPE)).code%>" == "1"){
+            $("#add-admin-div").show();
+        }
         var columns = [
             {
                 data: 'wmSchoolId', sClass: 'center', render: function (data, type, row, meta) {
@@ -153,12 +160,6 @@
                                     onclick="goWindow('添加校区用户','${pageContext.request.contextPath}/admin/system/getAdditionAdminView.do?typeId=1')">
                                     <i class="Hui-iconfont Hui-iconfont-user-add" ></i>添加校区用户
                                 </a><br />
-                                <a  id="addAdditionUser" style="text-decoration:none;" class="ml-5" href="javascript:;" title="添加用户">
-                                    <i class="Hui-iconfont Hui-iconfont-tags"></i>年级管理
-                                </a>
-                                <a  id="addAdditionUser" style="text-decoration:none;" class="ml-5" href="javascript:;" title="添加用户">
-                                    <i class="Hui-iconfont Hui-iconfont-tags"></i>年级管理
-                                </a>
 					`;
 
                 }

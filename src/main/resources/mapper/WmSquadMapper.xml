@@ -16,8 +16,15 @@
         INNER JOIN wm_grade AS B ON A.wm_grade_id = B.wm_grade_id
         INNER JOIN wm_squad AS C ON A.wm_squad_id = C.wm_squad_id
         INNER JOIN wm_school AS D ON B.wm_school_id = D.wm_school_id
-
-
-
+        WHERE B.`status` = 1 AND C.`status` = 1
+        <if test="squadId != null">
+            AND C.wm_squad_id = #{squadId}
+        </if>
+        <if test="gradeId != null">
+            AND B.wm_grade_id = #{gradeId}
+        </if>
+        <if test="schoolId != null">
+            AND D.wm_school_id = #{schoolId}
+        </if>
     </select>
 </mapper>

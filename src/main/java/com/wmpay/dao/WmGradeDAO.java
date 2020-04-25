@@ -11,5 +11,6 @@ import org.apache.ibatis.annotations.Param;
 
 public interface WmGradeDAO extends BaseMapper<WmGrade> {
 
-    IPage<GradeVO> selectGradeList(Page<WmGrade> page);
+    // 查询年级信息 分权限查看
+    IPage<GradeVO> selectGradeList(Page<WmGrade> page, @Param("gradeId")Integer gradeId, @Param("schoolId")Integer schoolId);
 }

@@ -259,3 +259,82 @@ function getSchool(url) {
 	});
 	return opt_val;
 }
+
+
+/**
+ * 获取Echarts 饼状图配置信息
+ * @param text
+ * @param color
+ */
+function getEchartsCakeOption(text, color) {
+	return {
+		title: {
+			text: text,
+			x: 'center',
+			y: 'center',
+			textStyle: {
+				fontWeight: 'normal',
+				color: '#333',
+				fontSize: 30
+			}
+		},
+		color: color,
+		tooltip: {
+			trigger: 'item',
+			formatter: "{b}: {c} ({d}%)",
+		},
+		label: {
+			show: false,
+		},
+		series: [
+			{
+				type:'pie',
+				radius: ['65%', '80%'],
+				avoidLabelOverlap: false,
+				hoverAnimation: false,
+				label: {
+					show: false,
+				},
+				data:[
+					{value:100}
+				]
+			}
+		],
+	}
+}
+
+/**
+ *
+ * @param legendData 标题
+ * @param xAxisData X坐标信息
+ * @param series Y数据信息
+ * @returns {{yAxis: {axisLine: {}, type: string, nameTextStyle: {}}, xAxis: {data: *}, legend: {data: *, x: string, y: string}, series: [{symbol: string, data: [], symbolSize: number, name: string, itemStyle: {bborderColor: string, color: string, borderWidth: number}, type: string}, {symbol: string, data: [], symbolSize: number, name: string, itemStyle: {borderColor: string, color: string, borderWidth: number}, type: string}], tooltip: {trigger: string}, title: {show: boolean}}}
+ */
+function initEchartsWireOption(legendData, xAxisData, series) {
+	return {
+		title: {
+			show: false,
+		},
+		tooltip: {
+			trigger: 'axis'
+		},
+		legend: {
+			x : 'center',
+			y : 'top',
+			data: legendData
+		},
+		xAxis: {
+			data: xAxisData,
+		},
+		yAxis:{
+			type: 'value',
+			nameTextStyle: {
+				// 坐标轴名称的文字样式
+			},
+			axisLine: {
+				// 坐标轴轴线相关设置
+			}
+		},
+		series: series
+	}
+}

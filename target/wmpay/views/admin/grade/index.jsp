@@ -80,6 +80,12 @@
 <script>
 
     $(function () {
+        var str = "";
+        // 加载数据选项
+        $.get("${pageContext.request.contextPath}/admin/auth/getGradePayAuth.do", function (res) {
+            var data = res.data;
+            str = data;
+        });
         var columns = [
             {
                 data: 'wmGradeId', sClass: 'center', render: function (data, type, row, meta) {
@@ -127,10 +133,11 @@
             {
                 targets: [6],
                 render: function (data, type, row) {
-                    return `
-                                <a  id="edit" href="javascript:;" title="编辑">编辑</a>
-                                <a  id="del" href="javascript:;" title="删除">\删除</a>
-					`;
+                    return str;
+                    // return `
+                    //             <a  id="edit" href="javascript:;" title="编辑">编辑</a>
+                    //             <a  id="del" href="javascript:;" title="删除">\删除</a>
+					// `;
                 }
             }
         ];

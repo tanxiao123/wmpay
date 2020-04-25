@@ -22,15 +22,29 @@
 		<property name="suffix" value=".jsp"></property>
 	</bean>
 
+	<bean id="utf8Charset" class="java.nio.charset.Charset"
+		  factory-method="forName">
+		<constructor-arg value="UTF-8"/>
+	</bean>
+
+	<mvc:annotation-driven>
+		<mvc:message-converters>
+			<bean class="org.springframework.http.converter.StringHttpMessageConverter">
+				<constructor-arg ref="utf8Charset"/>
+			</bean>
+		</mvc:message-converters>
+	</mvc:annotation-driven>
+
 
 
 	<mvc:interceptors>
 		<mvc:interceptor>
 			<!-- 拦截所有mvc控制器 -->
-			<mvc:mapping path="/admin/**" />
+			<mvc:mapping path="/**" />
 			<!-- mvc:exclude-mapping是另外一种拦截，它可以在你后来的测试中对某个页面进行不拦截，这样就不用在 LoginInterceptor的preHandler方法里面获取不拦截的请求uri地址了(优选) -->
 			<mvc:exclude-mapping
 				path="/admin/system/doLogin.do" />
+			<mvc:exclude-mapping path="/agency/system/doLogin.do"/>
 			<bean class="com.wmpay.Interceptor.BackEndInterceptor"></bean>
 		</mvc:interceptor>
 	</mvc:interceptors>

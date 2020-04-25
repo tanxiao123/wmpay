@@ -27,17 +27,27 @@ public class WmSchoolService {
     private HttpServletRequest request;
 
 
-
+    /**
+     * 查询学校列表信息
+     * @param pageTools
+     * @return
+     */
     public IPage<SchoolVO> selectListPage(PageTools pageTools) {
-        Integer adminId = null;
-        // 验证订单权限
-        AdminTypeEnum adminType = ((AdminTypeEnum)request.getSession().getAttribute(AdminCommon.USER_TYPE));
+        Integer schoolId = null;
+        // 验证学校权限
+        AdminTypeEnum adminType = ((AdminTypeEnum)request.getSession().getAttribute(AdminCommon.USER_TYPE) );
         switch (adminType){
             case WM_ADDITION_ADMIN:
                 WmAdditionAdmin admin =  ((WmAdditionAdmin)request.getSession().getAttribute(AdminCommon.USER_SESSION));
-                adminId = admin.getWmAdditionAdminId();
+                // 验证当前类型如果为学校 那么继续执行条件查询 否则当前状态不为学校等级  则返回空数据
+                if (admin.getType() != null && Integer.parseInt(admin.getType()) <= 1){
+                    schoolId = admin.getUserId();
+                }else{
+                    return null;
+                }
+                break;
         }
-        return wmSchoolDAO.selectParentSchool(new Page<WmSchool>(pageTools.getStart(), pageTools.getLength() ), adminId );
+        return wmSchoolDAO.selectParentSchool(new Page<WmSchool>(pageTools.getStart(), pageTools.getLength() ), schoolId );
     }
 
     /**
