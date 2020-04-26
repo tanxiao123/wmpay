@@ -6,8 +6,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
+import com.wmpay.bean.*;
 import com.wmpay.bean.VO.AdminVO;
-import com.wmpay.bean.WmAdditionAdmin;
 import com.wmpay.common.AdminTypeEnum;
 import com.wmpay.service.WmAdditionAdminService;
 import com.wmpay.util.AppResponse;
@@ -23,9 +23,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.weimai.tools.ResponseBean;
-import com.wmpay.bean.WmAdmin;
-import com.wmpay.bean.WmAuthGroup;
-import com.wmpay.bean.WmAuthGroupAccess;
 import com.wmpay.bean.VO.SavePermissionVO;
 import com.wmpay.common.AdminCommon;
 import com.wmpay.common.PageTools;
@@ -52,6 +49,7 @@ public class SystemController {
 
     @Autowired
     WmAdditionAdminService wmAdditionAdminService;
+
 
     /**
      * 登陆
@@ -520,8 +518,9 @@ public class SystemController {
      * @return
      */
     @RequestMapping(value = "getAdditionAdminView", method = RequestMethod.GET, produces = "application/json; charset=utf-8")
-    public String getAdditionAdminView(@RequestParam("typeId")String typeId, HttpServletRequest request) {
+    public String getAdditionAdminView(@RequestParam("typeId")String typeId, @RequestParam("userId")Integer userId, HttpServletRequest request) {
         request.setAttribute("typeId", typeId);
+        request.setAttribute("userId", userId);
         return "/admin/addition/add";
     }
 
@@ -539,6 +538,57 @@ public class SystemController {
         }
         if (wmAdditionAdminService.saveAddition(wmAdditionAdmin) ){
             return AppResponse.success();
+        }else{
+            return AppResponse.error(ResponseEnum.ERROR);
+        }
+    }
+
+    /**
+     * 加载编辑代理管理员视图
+     * @param typeId
+     * @param userId
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "editAdditionAdminView")
+    public String  editAdditionAdminView(@RequestParam("typeId")String typeId, @RequestParam("userId") Integer userId, HttpServletRequest request) {
+
+        WmAdditionAdmin admin = wmAdditionAdminService.getWmAddition(typeId, userId);
+        WmAdditionGroupAccess group =  wmAdditionAdminService.getWmAdditionGroupById(admin.getWmAdditionAdminId() );
+        request.setAttribute("groupId", group.getWmAuthGroupId());
+        request.setAttribute("admin", admin);
+        return "/admin/addition/edit";
+    }
+
+    /**
+     * 编辑代理管理员
+     * @param wmAdditionAdmin
+     * @param result
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = "editAdditionAdmin", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
+    public ResponseBean editAdditionAdmin(@Validated(Update.class)  WmAdditionAdmin wmAdditionAdmin, @RequestParam("ruleId")Integer ruleId, BindingResult result) {
+        if (result.hasErrors()) {
+            return AppResponse.error(ResponseEnum.FIELD_ERROR.status, result.getFieldError().getDefaultMessage()) ;
+        }
+        if (wmAdditionAdminService.updateAdditionById(wmAdditionAdmin) ){
+            // 修改当前用户所选角色
+            WmAdditionGroupAccess dbResult = wmAdditionAdminService.getWmAdditionGroupById(wmAdditionAdmin.getWmAdditionAdminId() );
+            if ( dbResult != null ){
+                if (!dbResult.getWmAuthGroupId().equals(ruleId) ){
+                    WmAdditionGroupAccess dbAccess = wmAdditionAdminService.getWmAdditionGroupById(wmAdditionAdmin.getWmAdditionAdminId() );
+                    WmAdditionGroupAccess groupAccess = new WmAdditionGroupAccess();
+                    // TODO: 此处使用DB查询来获取角色ID 并进行赋值
+                    groupAccess.setWmAdditionGroupAccessId(dbAccess.getWmAdditionGroupAccessId() );
+                    groupAccess.setWmAdditionAdminId(wmAdditionAdmin.getWmAdditionAdminId() );
+                    groupAccess.setWmAuthGroupId(ruleId);
+                    wmAdditionAdminService.updateWmAdditionGroup(groupAccess);
+                }
+                return AppResponse.success();
+            }else{
+                return AppResponse.error(ResponseEnum.ERROR.status, "管理员角色为空");
+            }
         }else{
             return AppResponse.error(ResponseEnum.ERROR);
         }

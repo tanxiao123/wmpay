@@ -3,7 +3,8 @@
 <mapper namespace="com.wmpay.dao.WmAuthGroupDAO">
 	
 	<select id="selectPageAuthGroup" resultType="WmAuthGroup">
-		select wm_auth_group_id, parent_id, name, status, created_time, updated_time from wm_auth_group
+		select wm_auth_group_id, parent_id, name, status, created_time, updated_time
+		from wm_auth_group
 		order by updated_time desc
 	</select>
 </mapper>

@@ -5,12 +5,15 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.wmpay.template.Insert;
+import com.wmpay.template.Update;
 import org.hibernate.validator.constraints.NotBlank;
 
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 public class WmAdditionAdmin {
 
+    @NotNull(message = "代理主键不可为空", groups = {Update.class})
     @TableId(value = "wm_addition_admin_id", type = IdType.AUTO)
     private Integer wmAdditionAdminId;
 
@@ -18,12 +21,13 @@ public class WmAdditionAdmin {
 
     private Integer wmWechatPayConfigId;
 
+    @NotNull(message = "用户主键不可为空", groups = {Insert.class})
     private Integer userId;
 
     @NotBlank(message = "用户名不可为空")
     private String username;
 
-    @NotBlank(message = "昵称不可为空", groups = {Insert.class})
+    @NotBlank(message = "昵称不可为空")
     private String nickname;
 
     @NotBlank(message = "密码不可为空")

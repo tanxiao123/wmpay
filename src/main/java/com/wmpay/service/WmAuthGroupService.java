@@ -6,6 +6,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.wmpay.bean.WmAdditionAdmin;
+import com.wmpay.common.AdminCommon;
+import com.wmpay.common.AdminTypeEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +23,8 @@ import com.wmpay.common.PageTools;
 import com.wmpay.dao.WmAuthGroupDAO;
 import com.wmpay.dao.WmAuthRuleDAO;
 
+import javax.servlet.http.HttpServletRequest;
+
 @Service
 public class WmAuthGroupService {
 
@@ -29,12 +34,28 @@ public class WmAuthGroupService {
 	@Autowired
 	WmAuthRuleDAO wmAuthRuleDAO;
 
+	@Autowired
+	HttpServletRequest request;
+
+	/**
+	 * 查询权限列表
+	 * @param pageTools
+	 * @return
+	 */
 	public IPage<WmAuthGroup> getAuthGroupList(PageTools pageTools) {
-		return wmAuthGroupDAO.selectPageAuthGroup(new Page<WmAuthGroup>(pageTools.getStart(), pageTools.getLength()));
+
+		return wmAuthGroupDAO.selectPageAuthGroup(new Page<WmAuthGroup>(pageTools.getStart(), pageTools.getLength()) );
 	}
 
 	public List<WmAuthGroup> getAuthGroupList() {
-		return wmAuthGroupDAO.selectList(new QueryWrapper<WmAuthGroup>());
+		AdminTypeEnum adminType = ((AdminTypeEnum)request.getSession().getAttribute(AdminCommon.USER_TYPE) );
+		QueryWrapper queryWrapper = new QueryWrapper<WmAuthGroup>();
+		switch (adminType){ // 如果为当前管理员  那么该值为0
+			case WM_ADDITION_ADMIN:
+				queryWrapper.eq("type", 1);
+				break;
+		}
+		return wmAuthGroupDAO.selectList(queryWrapper);
 	}
 
 	public Boolean savePermission(SavePermissionVO savePermissionVO) {

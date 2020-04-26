@@ -82,7 +82,7 @@
     $(function () {
         var str = "";
         // 加载数据选项
-        $.get("${pageContext.request.contextPath}/admin/auth/getGradePayAuth.do", function (res) {
+        $.post("${pageContext.request.contextPath}/admin/auth/getGradePayAuth.do", function (res) {
             var data = res.data;
             str = data;
         });
@@ -134,10 +134,6 @@
                 targets: [6],
                 render: function (data, type, row) {
                     return str;
-                    // return `
-                    //             <a  id="edit" href="javascript:;" title="编辑">编辑</a>
-                    //             <a  id="del" href="javascript:;" title="删除">\删除</a>
-					// `;
                 }
             }
         ];
@@ -161,6 +157,62 @@
         tableCick('#edit', function (data, rows) {
             var index = goWindow('编辑年级', 'editGradeView.do?wmGradeId=' + data.wmGradeId);
             layer.full(index);
+        });
+
+        tableCick('#account', function (data, rows) {
+            // 1. 检测是否存在代理账户
+            $.post("${pageContext.request.contextPath}/admin/auth/isAddition.do",{
+                type: "2",
+                userId: data.wmGradeId
+            }, function(res){
+                var code = res.status;
+                switch (code) {
+                    case 1:
+                        layer.alert("无权限查看账户 请联系学校管理人员进行开通账户");
+                        break;
+                    case 2:
+                        // 已开通  跳转修改界面
+                        console.log("已开通  跳转修改界面");
+                        goWindow('账户详情', '${pageContext.request.contextPath}/admin/system/editAdditionAdminView.do?typeId=2&userId='+data.wmGradeId);
+                        break;
+                    case 3:
+                        layer.confirm("当前暂未开通账户，是否开通？", function (){
+                            // 跳转用户开通界面
+                            console.log("跳转用户开通界面");
+                            goWindow('新增代理用户', '${pageContext.request.contextPath}/admin/system/getAdditionAdminView.do?typeId=2&userId='+data.wmGradeId)
+                        });
+                        break;
+                }
+            });
+        });
+
+        tableCick('#payConfig', function(data, rows){
+            $.post("${pageContext.request.contextPath}/admin/auth/isAdditionPay.do",{
+                type: "2",
+                userId: data.wmGradeId
+            }, function(res){
+                var code = res.status;
+                switch (code) {
+                    case 1:
+                        layer.alert("无权限查看账户 请联系学校管理人员进行开通账户");
+                        break;
+                    case 5:
+                        // 已开通  跳转修改界面
+                        console.log("已开通  跳转修改界面");
+                        $.post("${pageContext.request.contextPath}/admin/auth/getAdditionAdminByUserId.do?userId="+data.wmGradeId+"&type=2", function(res){
+                            console.log(res);
+                            goWindow('支付配置', '${pageContext.request.contextPath}/admin/pay/getEditSysPayView.do?wmKeyId='+res.data.userId);
+                        });
+                        break;
+                    case 3:
+                        layer.confirm("当前暂未开通账户，是否开通？", function (){
+                            // 跳转用户开通界面
+                            console.log("跳转用户开通界面");
+                            goWindow('新增代理用户', '${pageContext.request.contextPath}/admin/system/getAdditionAdminView.do?typeId=2&userId='+data.wmGradeId)
+                        });
+                        break;
+                }
+            });
         })
     });
 

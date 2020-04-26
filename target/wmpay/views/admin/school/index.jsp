@@ -157,7 +157,7 @@
                                     <i class="Hui-iconfont Hui-iconfont-system"></i>支付配置
                                 </a><br />
                                 <a  id="addAdditionUser" style="text-decoration:none;" class="ml-5" href="javascript:;" title="添加用户"
-                                    onclick="goWindow('添加校区用户','${pageContext.request.contextPath}/admin/system/getAdditionAdminView.do?typeId=1')">
+                                    onclick="goWindow('添加校区用户','${pageContext.request.contextPath}/admin/system/getAdditionAdminView.do?typeId=1&userId=\${row.wmSchoolId}')">
                                     <i class="Hui-iconfont Hui-iconfont-user-add" ></i>添加校区用户
                                 </a><br />
 					`;

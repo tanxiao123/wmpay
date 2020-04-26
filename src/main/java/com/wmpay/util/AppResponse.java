@@ -7,11 +7,7 @@ import javax.xml.ws.Response;
 
 public class AppResponse {
 
-    private static ResponseBean bean;
-
-    static {
-        bean = new ResponseBean();
-    }
+    private static ResponseBean bean = new ResponseBean();
 
     public static ResponseBean success(Object data) {
         bean.setStatus(ResponseEnum.SUCCESS.status);
@@ -25,6 +21,7 @@ public class AppResponse {
         bean.setStatus(ResponseEnum.SUCCESS.status);
         bean.setCusMsg(ResponseEnum.SUCCESS.msg);
         bean.setTipMsg(ResponseEnum.SUCCESS.msg);
+        bean.setData(null);
         return bean;
     }
 
@@ -32,6 +29,7 @@ public class AppResponse {
         bean.setStatus(status);
         bean.setCusMsg(msg);
         bean.setTipMsg(msg);
+        bean.setData(null);
         return bean;
     }
 
@@ -39,6 +37,7 @@ public class AppResponse {
         bean.setStatus(enums.status);
         bean.setCusMsg(enums.msg);
         bean.setTipMsg(enums.msg);
+        bean.setData(null);
         return bean;
     }
 
