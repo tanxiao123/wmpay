@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.weimai.tools.Wm;
 import com.wmpay.bean.VO.SchoolVO;
 import com.wmpay.bean.WmAdditionAdmin;
+import com.wmpay.bean.WmGrade;
 import com.wmpay.bean.WmSchool;
 import com.wmpay.common.AdminCommon;
 import com.wmpay.common.AdminTypeEnum;
@@ -25,6 +26,9 @@ public class WmSchoolService {
 
     @Autowired
     private HttpServletRequest request;
+
+    @Autowired
+    private WmGradeService wmGradeService;
 
 
     /**
@@ -60,7 +64,32 @@ public class WmSchoolService {
     }
 
     public List<WmSchool> selectList() {
-        return wmSchoolDAO.selectSchoolList();
+        Integer wmSchoolId = null;
+        // 验证年级权限
+        AdminTypeEnum adminType = ((AdminTypeEnum)request.getSession().getAttribute(AdminCommon.USER_TYPE) );
+        switch (adminType){
+            case WM_ADDITION_ADMIN:
+                WmAdditionAdmin admin =  ((WmAdditionAdmin)request.getSession().getAttribute(AdminCommon.USER_SESSION));
+                // TODO: 当前类型等于年级级别  那么只查询当前年级信息 并操作 如当前类型为学校 那么查询该学校下的年级信息
+                if (admin.getType() != null){
+                    String userType = admin.getType();
+                    switch (userType){
+                        case "1": // 学校类型
+                            wmSchoolId = admin.getUserId();
+                            break;
+                        case "2": // 班级类型
+                            WmGrade wmGrade = wmGradeService.getGradeById(admin.getUserId() );
+                            wmSchoolId = wmGrade.getWmSchoolId();
+                            break;
+                        default:
+                            return null;
+                    }
+                }else{
+                    return null;
+                }
+                break;
+        }
+        return wmSchoolDAO.selectSchoolList(wmSchoolId);
     }
 
     public Boolean delSchool(Integer wmSchoolId) {

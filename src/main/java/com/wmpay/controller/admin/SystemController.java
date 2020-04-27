@@ -1,12 +1,15 @@
 package com.wmpay.controller.admin;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
+import com.weimai.tools.Wm;
 import com.wmpay.bean.*;
+import com.wmpay.bean.VO.AdditionAdminAdd;
 import com.wmpay.bean.VO.AdminVO;
 import com.wmpay.common.AdminTypeEnum;
 import com.wmpay.service.WmAdditionAdminService;
@@ -532,12 +535,27 @@ public class SystemController {
      */
     @ResponseBody
     @RequestMapping(value = "saveAdditionAdmin", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
-    public ResponseBean saveAdditionAdmin(@Validated WmAdditionAdmin wmAdditionAdmin, BindingResult result) {
+    public ResponseBean saveAdditionAdmin(@Validated AdditionAdminAdd wmAdditionAdmin, BindingResult result) {
         if (result.hasErrors()) {
             return AppResponse.error(ResponseEnum.FIELD_ERROR.status, result.getFieldError().getDefaultMessage());
         }
-        if (wmAdditionAdminService.saveAddition(wmAdditionAdmin) ){
-            return AppResponse.success();
+        WmAdditionAdmin adminBean = new WmAdditionAdmin();
+        adminBean.setPassword(wmAdditionAdmin.getPassword() );
+        adminBean.setIsDefaultPay("0");
+        adminBean.setUserId(wmAdditionAdmin.getUserId() );
+        adminBean.setUsername(wmAdditionAdmin.getUsername() );
+        adminBean.setNickname(wmAdditionAdmin.getNickname() );
+        adminBean.setType(wmAdditionAdmin.getType() );
+        adminBean.setLogintime(new Date());
+        adminBean.setUpdatedTime(new Date() );
+        adminBean.setCreatedTime(new Date() );
+        adminBean.setSalt(Wm.getRandom(8) );
+        adminBean.setStatus("1");
+        int response = wmAdditionAdminService.saveAddition(adminBean);
+        if (response > 0){
+            // 添加用户角色对应
+            return wmAdditionAdminService.addWmAdditionGroupAccess(wmAdditionAdmin.getRuleId(),response)
+                    ? AppResponse.success() : AppResponse.error(ResponseEnum.ERROR);
         }else{
             return AppResponse.error(ResponseEnum.ERROR);
         }

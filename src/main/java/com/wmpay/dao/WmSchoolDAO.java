@@ -19,5 +19,5 @@ public interface WmSchoolDAO extends BaseMapper<WmSchool> {
      * 不分页 分校区PID查询列表数据
      * @return
      */
-    List<WmSchool> selectSchoolList();
+    List<WmSchool> selectSchoolList(@Param("wmSchoolId")Integer wmSchoolId);
 }

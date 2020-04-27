@@ -47,7 +47,20 @@ public class WmSquadService {
                 WmAdditionAdmin admin =  ((WmAdditionAdmin)request.getSession().getAttribute(AdminCommon.USER_SESSION));
                 // TODO: 查询当前用户等级是否为班级  如果为班级 那么只查询该班级的信息 如为
                 if (admin.getType() != null){
-                    squadId = admin.getUserId();
+                    //squadId = admin.getUserId();
+                    switch (admin.getType()){
+                        case "1":
+                            schoolId = admin.getUserId();
+                            break;
+                        case "2":
+                            gradeId = admin.getUserId();
+                            break;
+                        case "3":
+                            squadId = admin.getUserId();
+                            break;
+                        default:
+                            return null;
+                    }
                 }else{
                     return null;
                 }
@@ -98,7 +111,7 @@ public class WmSquadService {
         if (wmSquadInsert > 0){
             // 新增关系表建立
             WmGradeSquad wmGradeSquad = new WmGradeSquad();
-            wmGradeSquad.setWmSquadId(squadAO.getWmSquadId() );
+            wmGradeSquad.setWmSquadId(wmSquad.getWmSquadId() );
             wmGradeSquad.setWmGradeId(squadAO.getWmGradeId() );
             int wmGradeSquadInsert = wmGradeSquadDAO.insert(wmGradeSquad);
             if (wmGradeSquadInsert > 0){

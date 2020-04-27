@@ -1,5 +1,6 @@
 package com.wmpay.bean;
 
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.wmpay.template.Update;
@@ -13,7 +14,7 @@ import java.util.Date;
  */
 public class WmSquad {
 
-    @TableId(value = "wm_squad_id")
+    @TableId(value = "wm_squad_id", type = IdType.AUTO)
     @NotNull(message = "班级ID不可为空",groups = {Update.class})
     private Integer wmSquadId;
 

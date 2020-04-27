@@ -8,6 +8,7 @@ import com.wmpay.service.WmAdditionAdminService;
 import com.wmpay.service.WmGradeService;
 import com.wmpay.template.ResponseEnum;
 import com.wmpay.util.AppResponse;
+import com.wmpay.util.Auth;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -105,6 +106,9 @@ public class AuthController {
     @ResponseBody
     @RequestMapping(value = "isAdditionPay",produces = "application/json; charset=utf-8", method = RequestMethod.POST)
     public ResponseBean isAdditionPay(@RequestParam("type") String type, @RequestParam("userId")Integer userId) {
+
+        Auth auth = new Auth();
+
         if (type == null || "".equals(type) ){
             AppResponse.error(ResponseEnum.FIELD_ERROR.status,"用户类型不可为空");
         }
@@ -112,33 +116,20 @@ public class AuthController {
             AppResponse.error(ResponseEnum.FIELD_ERROR.status, "用户ID不可为空");
         }
 
-        WmAdditionAdmin admin =  ((WmAdditionAdmin)request.getSession().getAttribute(AdminCommon.USER_SESSION));
-        if (admin.getWmThirdPayConfigId() == null || admin.getWmWechatPayConfigId() == null){
-            // 验证当前用户类型
-            AdminTypeEnum adminType = ((AdminTypeEnum)request.getSession().getAttribute(AdminCommon.USER_TYPE) );
-            switch (adminType) {
-                case WM_SYSTEM_ADMIN:
-                    return AppResponse.error(ResponseEnum.SUCCESS_PAY_NOT_FOUND_ADMIN);
-                case WM_ADDITION_ADMIN:
-                    // 验证当前登陆用户权限
-                    if (admin.getType() != null) {
-                        String userType = admin.getType();
-                        switch (userType) {
-                            case "1": // 学校类型
-                                return AppResponse.error(ResponseEnum.SUCCESS_PAY_NOT_FOUND_ADMIN);
-                            default: // 无权限  返回正常状态
-                                return AppResponse.success();
-                        }
-                    }else{
-                        return AppResponse.error(ResponseEnum.ERROR,"用户类型不存在");
-                    }
-                default :
-                    return AppResponse.error(ResponseEnum.ERROR,"类型错误");
+
+        WmAdditionAdmin wmAdditionResult = wmAdditionAdminService.getWmAddition(type, userId);
+        if (wmAdditionResult != null){
+            // 检测下面支付配置是否存在在
+            if (wmAdditionResult.getWmThirdPayConfigId() != null && wmAdditionResult.getWmWechatPayConfigId() != null){
+                return AppResponse.error(ResponseEnum.SUCCESS_PAY);
+            }else{
+                return auth.authCheck(request);
             }
         }else{
-            // 已存在
-            return AppResponse.error(ResponseEnum.SUCCESS_PAY);
+            return auth.authCheck(request).getStatus() >= 1 ?  AppResponse.error(ResponseEnum.OK_ACCESS) : AppResponse.error(ResponseEnum.NO_ACCESS);
         }
+
+
     }
 
     /**
@@ -148,7 +139,32 @@ public class AuthController {
      */
     @ResponseBody
     @RequestMapping(value = "getAdditionAdminByUserId",produces = "application/json; charset=utf-8", method = RequestMethod.POST)
-    public ResponseBean getAdditionAdminByUserId(@RequestParam("userId")Integer userId) {
-        return AppResponse.success(wmAdditionAdminService.getWmAdditionByUserId(userId) );
+    public ResponseBean getAdditionAdminByUserId(@RequestParam("userId")Integer userId, @RequestParam("type")String type) {
+        return AppResponse.success(wmAdditionAdminService.getWmAdditionByUserId(userId, type) );
     }
+
+    /**
+     * 开通支付配置
+     * @param userId
+     * @param type
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = "addPayConfig",produces = "application/json; charset=utf-8", method = RequestMethod.POST)
+    public ResponseBean addPayConfig(@RequestParam("userId") Integer userId, @RequestParam("type")String type) {
+        if (userId == null){
+            return AppResponse.error(ResponseEnum.NOT_PERMISSION);
+        }
+        if (wmAdditionAdminService.getWmAdditionByUserId(userId,type) == null){
+            return AppResponse.error(ResponseEnum.NOT_PERMISSION.status, "无该账户信息，请先添加账户后开通支付");
+        }
+        WmAdditionAdmin result = wmAdditionAdminService.getWmAdditionByUserId(userId,type);
+        if (result != null){
+            if (wmAdditionAdminService.addPayConfig(result.getWmAdditionAdminId() ) ){
+                return AppResponse.success();
+            }
+        }
+        return AppResponse.error(ResponseEnum.ERROR);
+    }
+
 }

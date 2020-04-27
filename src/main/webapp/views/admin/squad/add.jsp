@@ -155,6 +155,8 @@
                     url: "addSquad.do",
                     type: 'POST',
                     data: {
+                        wmSchoolId: wmSchoolId.value,
+                        wmGradeId: wmGradeId.value,
                         name: $("#name").val(),
                         teacherName: $("#teacherName").val(),
                         teacherMobile: $("#teacherMobile").val(),

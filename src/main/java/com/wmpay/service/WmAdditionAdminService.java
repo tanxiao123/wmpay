@@ -48,32 +48,15 @@ public class WmAdditionAdminService {
      * @param wmAdditionAdmin
      * @return
      */
-    public Boolean saveAddition(WmAdditionAdmin wmAdditionAdmin) {
-        Date date = new Date();
-        wmAdditionAdmin.setLogintime(date);
-        wmAdditionAdmin.setCreatedTime(date);
-        wmAdditionAdmin.setUpdatedTime(date);
-        wmAdditionAdmin.setSalt(Wm.getRandom(8));
-        wmAdditionAdmin.setStatus("1");
-        //wmAdditionAdmin.setUserId(wmAdditionAdmin.getUserId());
+    public Integer saveAddition(WmAdditionAdmin wmAdditionAdmin) {
         int result = wmAdditionAdminDAO.insert(wmAdditionAdmin);
         if (result > 0) {
             wmAdditionAdmin.setPassword(Des.encode(wmAdditionAdmin.getSalt(), wmAdditionAdmin.getPassword()));
             int upAdmin = wmAdditionAdminDAO.updateById(wmAdditionAdmin);
-//            if (upAdmin > 0) {
-//                // 新增支付配置
-//                WmThirdPayConfig wmPayConfiguration = new WmThirdPayConfig();
-//                int thirdPayResult = thirdPayConfigDAO.insert(wmPayConfiguration);
-//
-//                WmWechatPayConfig wechatPayConfig = new WmWechatPayConfig();
-//                wechatPayConfig.setPayType("JSAPI");
-//                int wePayResult = wechatPayConfigDAO.insert(wechatPayConfig);
-//
-//                return thirdPayResult > 0 && wePayResult > 0;
-//            }
-            return upAdmin > 0;
+
+            return upAdmin > 0 ? wmAdditionAdmin.getWmAdditionAdminId() : 0;
         }
-        return false;
+        return 0;
     }
 
 
@@ -212,7 +195,7 @@ public class WmAdditionAdminService {
      * @return
      */
     public WmAdditionGroupAccess getWmAdditionGroupById(Integer wmAdditionId) {
-        return wmAdditionGroupAccessDAO.selectById(wmAdditionId);
+        return wmAdditionGroupAccessDAO.selectOne(new QueryWrapper<WmAdditionGroupAccess>().eq("wm_addition_admin_id", wmAdditionId) );
     }
 
 
@@ -221,8 +204,53 @@ public class WmAdditionAdminService {
         return result > 0;
     }
 
-    public WmAdditionAdmin getWmAdditionByUserId(Integer userId) {
-        return wmAdditionAdminDAO.selectOne(new QueryWrapper<WmAdditionAdmin>().eq("user_id", userId) );
+    /**
+     * 根据UserId与用户类型查询代理用户信息
+     * @param userId
+     * @param type
+     * @return WmAdditionAdmin
+     */
+    public WmAdditionAdmin getWmAdditionByUserId(Integer userId, String type) {
+        return wmAdditionAdminDAO.selectOne(new QueryWrapper<WmAdditionAdmin>().eq("user_id", userId).eq("type", type) );
+    }
+
+    /**
+     * 添加支付配置
+     * @param wmAdditionId
+     * @return Boolean
+     */
+    public Boolean addPayConfig(Integer wmAdditionId) {
+        WmThirdPayConfig wmThirdPayConfig = new WmThirdPayConfig();
+        WmWechatPayConfig wechatPayConfig = new WmWechatPayConfig();
+        wmThirdPayConfig.setAppId("");
+        wechatPayConfig.setAppId("");
+        int thirdResult = thirdPayConfigDAO.insert(wmThirdPayConfig);
+        int wechatResult = wechatPayConfigDAO.insert(wechatPayConfig);
+        // 新增成功后编辑代理用户信息
+        if (thirdResult > 0 && wechatResult > 0){
+            WmAdditionAdmin bean = new WmAdditionAdmin();
+            bean.setWmAdditionAdminId(wmAdditionId);
+            bean.setWmThirdPayConfigId(wmThirdPayConfig.getWmThirdPayConfigId() );
+            bean.setWmWechatPayConfigId(wechatPayConfig.getWmWeChatPayConfigId() );
+            int updateResult = wmAdditionAdminDAO.updateById(bean);
+            return updateResult > 0;
+        }
+        return false;
+    }
+
+
+    /**
+     * 添加角色与代理关联
+     * @param groupId
+     * @param wmAdditionId
+     * @return
+     */
+    public Boolean addWmAdditionGroupAccess(Integer groupId, Integer wmAdditionId) {
+        WmAdditionGroupAccess wmAdditionGroupAccess = new WmAdditionGroupAccess();
+        wmAdditionGroupAccess.setWmAdditionAdminId(wmAdditionId);
+        wmAdditionGroupAccess.setWmAuthGroupId(groupId);
+        int result = wmAdditionGroupAccessDAO.insert(wmAdditionGroupAccess);
+        return result > 0;
     }
 
 

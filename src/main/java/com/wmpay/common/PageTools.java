@@ -1,13 +1,14 @@
 package com.wmpay.common;
 
-import com.sun.istack.internal.NotNull;
+
+import javax.validation.constraints.NotNull;
 
 public class PageTools {
 	
-	@NotNull
+	@NotNull(message = "当前页数不可为空")
 	private Integer start;
 	
-	@NotNull
+	@NotNull(message = "每页显示条数不可为空")
 	private Integer length;
 	
 

@@ -1,7 +1,11 @@
 package com.wmpay.bean;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
+
 public class WmGradeSquad {
 
+    @TableId(value = "wm_grade_squad_id", type = IdType.AUTO)
     private Integer wmGradeSquadId;
 
     private Integer wmSquadId;

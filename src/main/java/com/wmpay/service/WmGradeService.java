@@ -70,22 +70,23 @@ public class WmGradeService {
         payStr.append("<a  id='edit' href='javascript:;' style='margin-left:10px'  title='编辑'>编辑</a>");
         payStr.append("<a  id='del' href='javascript:;' style='margin-left:10px'  title='删除'>删除</a>");
         payStr.append("<a id='account' href='javascript:;' style='margin-left:10px' title='账户设置'>账户设置</a>");
+        payStr.append("<a id='payConfig' href='javascript:;' style='margin-left:10px' title='支付配置'>支付配置</a>");
 
-        switch (adminType){
-            case WM_SYSTEM_ADMIN:
-                payStr.append("<a id='payConfig' href='javascript:;' style='margin-left:10px' title='支付配置'>支付配置</a>");
-                break;
-            case WM_ADDITION_ADMIN:
-                // 验证当前登陆用户权限
-                WmAdditionAdmin admin =  ((WmAdditionAdmin)request.getSession().getAttribute(AdminCommon.USER_SESSION));
-                if (admin.getType() != null) {
-                    String userType = admin.getType();
-                    switch (userType) {
-                        case "1": // 学校类型
-                            payStr.append("<a id='payConfig' href='javascript:;' style='margin-left:10px' title='支付配置'>支付配置</a>");
-                    }
-                }
-        }
+//        switch (adminType){
+//            case WM_SYSTEM_ADMIN:
+//                payStr.append("<a id='payConfig' href='javascript:;' style='margin-left:10px' title='支付配置'>支付配置</a>");
+//                break;
+//            case WM_ADDITION_ADMIN:
+//                // 验证当前登陆用户权限
+//                WmAdditionAdmin admin =  ((WmAdditionAdmin)request.getSession().getAttribute(AdminCommon.USER_SESSION));
+//                if (admin.getType() != null) {
+//                    String userType = admin.getType();
+//                    switch (userType) {
+//                        case "1": // 学校类型
+//                            payStr.append("<a id='payConfig' href='javascript:;' style='margin-left:10px' title='支付配置'>支付配置</a>");
+//                    }
+//                }
+//        }
         return payStr.toString();
     }
 

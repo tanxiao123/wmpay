@@ -1,3 +1,6 @@
+<%@ page import="com.wmpay.common.AdminTypeEnum" %>
+<%@ page import="com.wmpay.common.AdminCommon" %>
+<%@ page import="com.wmpay.bean.WmAdditionAdmin" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -34,7 +37,7 @@
         </div>
         <div class="panel mt-20">
             <div class="panel-body">
-                <div class="clearfix">
+                <div class="clearfix" id="add-suqad-div">
 						<span class="f-l"> <a href="javascript:;"
                                               onclick="goWindow('添加班级','addSquadView.do')"
                                               class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i>
@@ -77,7 +80,23 @@
 
 <script type="text/javascript">
     var confirmTitle = "是否要禁用管理员？";
+
+    var str = "";
+    // 加载数据选项
+    $.post("${pageContext.request.contextPath}/admin/auth/getGradePayAuth.do", function (res) {
+        var data = res.data;
+        str = data;
+    });
+
     $(function(){
+        // add-suqad-div
+        // 设置管理员权限可添加操作
+        if ("<%=((AdminTypeEnum)request.getSession().getAttribute(AdminCommon.USER_TYPE)).code%>" == "2"){
+            if ("<%=((WmAdditionAdmin)request.getSession().getAttribute(AdminCommon.USER_SESSION)).getType()%>"  == "3"){
+                $("#add-suqad-div").hide();
+            }
+
+        }
         // 初始化表格信息
         var columns = [
             {data: 'wmSquadId',  sClass: 'center', render:function(data,type,row,meta){
@@ -130,10 +149,7 @@
                             confirmTitle = "是否要启用管理员?";
                             break;
                     }
-                    return `
-							<a style="text-decoration:none;margin:0 5px;" id="editInfo" href="javascript:;" title="编辑">编辑班级</a>
-							<a style="text-decoration:none;margin:0 5px;" id="deleteAdmin" href="javascript:;" title="删除">\删除</a>
-						`;
+                    return str;
                 }
             }
         ];
@@ -141,8 +157,71 @@
         // 初始化表格数据
         initMainTable("getSquadList.do",columns,20,1,columnDefs);
 
-        tableCick("#editInfo", function(data,rows){
+        tableCick("#edit", function(data,rows){
             goWindow("编辑班级","updateSquadView.do?wmSquadId="+data.wmSquadId)
+        })
+
+
+        tableCick('#account', function (data, rows) {
+            // 1. 检测是否存在代理账户
+            $.post("${pageContext.request.contextPath}/admin/auth/isAddition.do",{
+                type: "3",
+                userId: data.wmSquadId
+            }, function(res){
+                var code = res.status;
+                switch (code) {
+                    case 1:
+                        layer.alert("无权限查看账户 请联系学校管理人员进行开通账户");
+                        break;
+                    case 2:
+                        // 已开通  跳转修改界面
+                        console.log("已开通  跳转修改界面");
+                        goWindow('账户详情', '${pageContext.request.contextPath}/admin/system/editAdditionAdminView.do?typeId=3&userId='+data.wmSquadId);
+                        break;
+                    case 3:
+                        layer.confirm("当前暂未开通账户，是否开通？", function (){
+                            // 跳转用户开通界面
+                            console.log("跳转用户开通界面");
+                            goWindow('新增代理用户', '${pageContext.request.contextPath}/admin/system/getAdditionAdminView.do?typeId=3&userId='+data.wmSquadId)
+                        });
+                        break;
+                }
+            });
+        });
+
+
+        tableCick('#payConfig', function(data, rows){
+            $.post("${pageContext.request.contextPath}/admin/auth/isAdditionPay.do",{
+                type: "3",
+                userId: data.wmSquadId
+            }, function(res){
+                var code = res.status;
+                switch (code) {
+                    case -12:
+                        layer.alert("无权限查看账户 请联系学校管理人员进行开通账户");
+                        break;
+                    case 5:
+                        // 已开通  跳转修改界面
+                        console.log("已开通  跳转修改界面");
+                        $.post("${pageContext.request.contextPath}/admin/auth/getAdditionAdminByUserId.do?userId="+data.wmSquadId+"&type=3", function(res){
+                            console.log(res);
+                            goWindow('支付配置', '${pageContext.request.contextPath}/admin/pay/getEditSysPayView.do?wmKeyId='+res.data.wmAdditionAdminId);
+                        });
+                        break;
+                    case 6:
+                        var index = layer.confirm("当前暂未开通支付配置，是否开通？", function (){
+                            $.post("${pageContext.request.contextPath}/admin/auth/addPayConfig.do?userId="+data.wmSquadId+"&type=3", function(res) {
+                                console.log(res);
+                                layer.msg(res.cusMsg);
+                                layer.close(index);
+                            });
+
+                        });
+                        break;
+                    default:
+                        layer.msg('类型错误');
+                }
+            });
         })
 
 
