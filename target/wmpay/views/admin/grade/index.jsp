@@ -193,7 +193,7 @@
             }, function(res){
                 var code = res.status;
                 switch (code) {
-                    case 1:
+                    case -12:
                         layer.alert("无权限查看账户 请联系学校管理人员进行开通账户");
                         break;
                     case 5:
@@ -201,16 +201,21 @@
                         console.log("已开通  跳转修改界面");
                         $.post("${pageContext.request.contextPath}/admin/auth/getAdditionAdminByUserId.do?userId="+data.wmGradeId+"&type=2", function(res){
                             console.log(res);
-                            goWindow('支付配置', '${pageContext.request.contextPath}/admin/pay/getEditSysPayView.do?wmKeyId='+res.data.userId);
+                            goWindow('支付配置', '${pageContext.request.contextPath}/admin/pay/getEditSysPayView.do?wmKeyId='+res.data.wmAdditionAdminId);
                         });
                         break;
-                    case 3:
-                        layer.confirm("当前暂未开通账户，是否开通？", function (){
-                            // 跳转用户开通界面
-                            console.log("跳转用户开通界面");
-                            goWindow('新增代理用户', '${pageContext.request.contextPath}/admin/system/getAdditionAdminView.do?typeId=2&userId='+data.wmGradeId)
+                    case 6:
+                        var index = layer.confirm("当前暂未开通支付配置，是否开通？", function (){
+                            $.post("${pageContext.request.contextPath}/admin/auth/addPayConfig.do?userId="+data.wmGradeId+"&type=2", function(res) {
+                                console.log(res);
+                                layer.msg(res.cusMsg);
+                                layer.close(index);
+                            });
+
                         });
                         break;
+                    default:
+                        layer.msg('类型错误');
                 }
             });
         })

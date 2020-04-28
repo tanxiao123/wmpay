@@ -51,6 +51,9 @@
             wm_school
         WHERE
         `status` = 1
+        <if test="wmSchoolId != null">
+            AND wm_school_id = #{wmSchoolId}
+        </if>
         ORDER BY
             created_time DESC
     </select>

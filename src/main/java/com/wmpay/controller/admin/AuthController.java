@@ -2,6 +2,7 @@ package com.wmpay.controller.admin;
 
 import com.weimai.tools.ResponseBean;
 import com.wmpay.bean.WmAdditionAdmin;
+import com.wmpay.bean.WmAdmin;
 import com.wmpay.common.AdminCommon;
 import com.wmpay.common.AdminTypeEnum;
 import com.wmpay.service.WmAdditionAdminService;
@@ -165,6 +166,22 @@ public class AuthController {
             }
         }
         return AppResponse.error(ResponseEnum.ERROR);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "getUserInfo",produces = "application/json; charset=utf-8", method = RequestMethod.POST)
+    public ResponseBean getUserInfo() {
+        AdminTypeEnum adminType = ((AdminTypeEnum)request.getSession().getAttribute(AdminCommon.USER_TYPE) );
+        switch (adminType){
+            case WM_SYSTEM_ADMIN:
+                WmAdmin wmAdmin = ((WmAdmin)request.getSession().getAttribute(AdminCommon.USER_SESSION));
+                return AppResponse.success(wmAdmin);
+            case WM_ADDITION_ADMIN:
+                WmAdditionAdmin admin =  ((WmAdditionAdmin)request.getSession().getAttribute(AdminCommon.USER_SESSION));
+                return AppResponse.success(admin);
+            default:
+                return AppResponse.success();
+        }
     }
 
 }

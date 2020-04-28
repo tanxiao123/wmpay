@@ -8,26 +8,15 @@
         <div class="container-fluid clearfix">
           <nav id="Hui-topNav" class="nav navbar-nav">
             <ul class="clearfix">
-              <li><a data-href="article-add.html" data-title="新增资讯" onclick="Hui_admin_tab(this)" href="javascript:;">新增资讯</a></li>
-              <li class="dropDown dropDown_hover">
-                <a class="dropDown_A" href="javascript:;">顶部菜单</a>
-                <ul class="dropDown-menu menu radius box-shadow">
-                  <li class="">
-                    <a href="#">二级导航</a>
-                  </li>
-                  <li class="">
-                    <a href="#">二级导航</a>
-                  </li>
-                </ul>
-              </li>
             </ul>
           </nav>
           <nav id="Hui-userbar" class="nav navbar-nav navbar-userbar">
             <ul class="clearfix">
-              <li class="dropDown dropDown_hover"> <a href="#" class="dropDown_A"><i class="Hui-iconfont">&#xe6d5;</i></a>
+              <li class="dropDown dropDown_hover"> <a href="#" class="dropDown_A">
+                <i class="Hui-iconfont">&#xe6d5;</i>
+                <span id="header_user_name">ADMIN</span>
+              </a>
                 <ul class="dropDown-menu menu radius box-shadow">
-                  <li><a href="javascript:;" onClick="myselfinfo()">个人信息</a></li>
-                  <li><a href="#">切换账户</a></li>
                   <li><a href="${pageContext.request.contextPath }/admin/system/doLoginOut.do">退出</a></li>
                 </ul>
               </li>
@@ -37,3 +26,4 @@
         </div>
       </div>
     </header>
+

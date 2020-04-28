@@ -71,6 +71,7 @@ public class WmCommodityService {
     }
 
     public Boolean updateCommodity(WmCommodity wmCommodity) {
+        wmCommodity.setUpdatedTime(new Date() );
         int result = wmCommodityDAO.updateById(wmCommodity);
         return result > 0;
     }

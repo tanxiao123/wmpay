@@ -55,5 +55,14 @@
     </div>
 
     <jsp:include page="/views/admin/common/footer.jsp"></jsp:include>
+    <script>
+        $(function () {
+            console.log("执行")
+            $.post("${pageContext.request.contextPath}/admin/auth/getUserInfo.do", function (result) {
+                console.log(result);
+                $("#header_user_name").html(result.data.nickname);
+            });
+        })
+    </script>
 </body>
 </html>
