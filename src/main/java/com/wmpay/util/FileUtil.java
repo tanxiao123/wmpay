@@ -14,7 +14,7 @@ public class FileUtil {
 			FileUtil.properties = new Properties();
 		}
 		
-		InputStream input = new Object().getClass().getResourceAsStream(filePath);
+		InputStream input = FileUtil.class.getClassLoader().getResourceAsStream(filePath);
 		try {
 			FileUtil.properties.load(input);
 		}catch (IOException e) {

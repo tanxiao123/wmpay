@@ -1,7 +1,7 @@
 package com.wmpay.bean.AO;
 
 /**
- * 该类用于添加 修改使用
+ * 该类用于班级 添加 修改使用
  */
 public class SquadAO {
 

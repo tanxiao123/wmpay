@@ -3,6 +3,7 @@ package com.wmpay.service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.weimai.tools.Wm;
+import com.wmpay.bean.AO.SchoolAO;
 import com.wmpay.bean.VO.SchoolVO;
 import com.wmpay.bean.WmAdditionAdmin;
 import com.wmpay.bean.WmGrade;
@@ -63,6 +64,10 @@ public class WmSchoolService {
         return wmSchoolDAO.selectPointSchool(new Page<WmSchool>(pageTools.getStart(), pageTools.getLength() ), wmSchoolId );
     }
 
+    /**
+     * 根据后台权限查询列表数据
+     * @return
+     */
     public List<WmSchool> selectList() {
         Integer wmSchoolId = null;
         // 验证年级权限
@@ -90,6 +95,15 @@ public class WmSchoolService {
                 break;
         }
         return wmSchoolDAO.selectSchoolList(wmSchoolId);
+    }
+
+    /**
+     * 根据地区查询学校列表信息
+     * @param wmAreaId
+     * @return
+     */
+    public List<SchoolAO> selectListApi(Integer wmAreaId) {
+        return wmSchoolDAO.selectSchoolListApi(wmAreaId);
     }
 
     public Boolean delSchool(Integer wmSchoolId) {

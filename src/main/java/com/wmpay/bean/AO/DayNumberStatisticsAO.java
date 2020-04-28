@@ -1,5 +1,8 @@
 package com.wmpay.bean.AO;
 
+/**
+ * 统计代码
+ */
 public class DayNumberStatisticsAO {
 
     // 日期时间

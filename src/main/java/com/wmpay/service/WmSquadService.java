@@ -1,5 +1,6 @@
 package com.wmpay.service;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.wmpay.bean.AO.SquadAO;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
+import java.util.List;
 
 
 @Service
@@ -119,6 +121,11 @@ public class WmSquadService {
             }
         }
         return false;
+    }
+
+
+    public List<SquadAO> getSquadListByGradeId(Integer wmGradeId) {
+        return wmSquadDAO.selectListByGradeId(wmGradeId);
     }
 
 }

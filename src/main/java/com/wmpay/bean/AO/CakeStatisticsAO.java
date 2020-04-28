@@ -1,5 +1,8 @@
 package com.wmpay.bean.AO;
 
+/**
+ * 统计代码
+ */
 public class CakeStatisticsAO {
     // 总下单量
     private Integer countOrder;
