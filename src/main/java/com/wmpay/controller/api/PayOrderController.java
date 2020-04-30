@@ -24,6 +24,11 @@ public class PayOrderController extends PayServiceApacheHttpImpl {
 
     }
 
+    /**
+     * 下单接口
+     * @return
+     * @throws PayException
+     */
     @ResponseBody
     @RequestMapping(value = "doPay", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
     public ResponseBean doPay() throws PayException {

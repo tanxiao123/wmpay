@@ -4,6 +4,14 @@ package com.wmpay.controller.api;
 
 import java.util.HashMap;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.google.gson.JsonObject;
+import com.wmpay.bean.AO.WmPatriarchAO;
+import com.wmpay.bean.WmPatriarch;
+import com.wmpay.service.WmPatriarchService;
+import com.wmpay.template.ResponseEnum;
+import com.wmpay.util.AppResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,6 +32,9 @@ import com.wmpay.util.Msg;
 @Controller
 @RequestMapping("/wechat")
 public class WeChatController {
+
+	@Autowired
+	WmPatriarchService wmPatriarchService;
 	
 	WeChatBaseConfig weChatBaseConfig;
 
@@ -45,10 +56,21 @@ public class WeChatController {
 
 	@ResponseBody
 	@RequestMapping(value="/getOpenIdUnionId", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
-	public Msg getOpenIdUnionId(@RequestParam("code") String code) {
+	public ResponseBean getOpenIdUnionId(@RequestParam("code") String code) {
+		WmPatriarchAO wmPatriarchAO = new WmPatriarchAO();
 		payUtil.setWeChatBaseConfig(weChatBaseConfig);
 		ResponseBean result = payUtil.getOpenIdUnionId(code);
-		return result.getStatus() == 1 ? Msg.success().add("data", result.getData() ) : Msg.fail();
+		if (result.getStatus() == 1){ // 用户授权成功  查询是否存在该用户  不存在注册
+			JSONObject jsonObject = (JSONObject) result.getData();
+			String openid = (String) jsonObject.get("openid");
+			wmPatriarchAO = wmPatriarchService.getWmPatriarchInfoByOpenId(openid);
+			if (wmPatriarchAO == null){
+				// 新增用户操作
+
+			}
+			return AppResponse.success(wmPatriarchAO);
+		}
+		return AppResponse.error(ResponseEnum.ERROR);
 	}
 
 	@ResponseBody
@@ -57,8 +79,8 @@ public class WeChatController {
 
 		payUtil.setWeChatBaseConfig(weChatBaseConfig);
 		String orderNum = GeneralTools.GetUniqueSerial("TEST");
-		orderConfig.setAppid(weChatBaseConfig.getAppId());
-		orderConfig.setMch_id(weChatBaseConfig.getMchId());
+		orderConfig.setAppid(weChatBaseConfig.getAppId() );
+		orderConfig.setMch_id(weChatBaseConfig.getMchId() );
 		orderConfig.setBody("WEIXIN");
 		orderConfig.setNotify_url("http://localtion:8080/");
 		orderConfig.setOut_trade_no(orderNum);
