@@ -1,5 +1,6 @@
 package com.wmpay.service;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.wmpay.bean.WmAdditionAdmin;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class WmCommodityService {
@@ -31,6 +33,13 @@ public class WmCommodityService {
      */
     public IPage<WmCommodity> getWmCommodityList(PageTools pageTools, Integer userId, String type) {
         return wmCommodityDAO.selectPageCommodity(new Page<WmCommodity>(pageTools.getStart(), pageTools.getLength()), userId, type);
+    }
+
+    public List<WmCommodity> getWmCommodityList(Integer userId, String type) {
+        QueryWrapper<WmCommodity> queryWrapper = new QueryWrapper<WmCommodity>();
+        queryWrapper.eq("user_id", userId);
+        queryWrapper.eq("type", type);
+        return wmCommodityDAO.selectList(queryWrapper);
     }
 
     /**

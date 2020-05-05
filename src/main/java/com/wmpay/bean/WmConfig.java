@@ -7,7 +7,7 @@ public class WmConfig {
 
     private String title;
 
-    private String tip;
+    private String value;
 
     public Integer getWmConfigId() {
         return wmConfigId;
@@ -33,11 +33,11 @@ public class WmConfig {
         this.title = title == null ? null : title.trim();
     }
 
-    public String getTip() {
-        return tip;
+    public String getValue() {
+        return value;
     }
 
-    public void setTip(String tip) {
-        this.tip = tip == null ? null : tip.trim();
+    public void setValue(String value) {
+        this.value = value;
     }
 }

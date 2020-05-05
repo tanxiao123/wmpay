@@ -1,11 +1,12 @@
 package com.wmpay.dao;
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.wmpay.bean.WmPatriarchStudent;
 import com.wmpay.bean.WmPatriarchStudentExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
-public interface WmPatriarchStudentDAO {
+public interface WmPatriarchStudentDAO extends BaseMapper<WmPatriarchStudent> {
     long countByExample(WmPatriarchStudentExample example);
 
     int deleteByExample(WmPatriarchStudentExample example);

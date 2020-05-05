@@ -1,12 +1,13 @@
 package com.wmpay.bean;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
+
 import java.util.Date;
 
 public class WmStudent {
+    @TableId(value = "wm_student_id", type = IdType.AUTO)
     private Integer wmStudentId;
-
-    // 班级与年级关系表主键
-    private Integer wmGradeSquadId;
 
     private String name;
 
@@ -24,20 +25,14 @@ public class WmStudent {
 
     private String status;
 
+    private String type;
+
     public Integer getWmStudentId() {
         return wmStudentId;
     }
 
     public void setWmStudentId(Integer wmStudentId) {
         this.wmStudentId = wmStudentId;
-    }
-
-    public Integer getWmGradeSquadId() {
-        return wmGradeSquadId;
-    }
-
-    public void setWmGradeSquadId(Integer wmGradeSquadId) {
-        this.wmGradeSquadId = wmGradeSquadId;
     }
 
     public String getName() {
@@ -102,5 +97,13 @@ public class WmStudent {
 
     public void setStatus(String status) {
         this.status = status == null ? null : status.trim();
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }

@@ -1,6 +1,11 @@
 package com.wmpay.bean;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
+
 public class WmWechat {
+
+    @TableId(value = "wm_wechat_id", type = IdType.AUTO)
     private Integer wmWechatId;
 
     private String openid;

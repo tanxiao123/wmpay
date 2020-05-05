@@ -106,4 +106,9 @@ public class WmOrderService {
         return wmOrderDAO.getStatisticsCake(dateStr, adminId);
     }
 
+    public Integer addOrder(WmOrder wmOrder) {
+        int result = wmOrderDAO.insert(wmOrder);
+        return result > 0 ? wmOrder.getWmOrderId() : result;
+    }
+
 }

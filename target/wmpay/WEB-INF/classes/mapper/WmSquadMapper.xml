@@ -27,4 +27,19 @@
             AND D.wm_school_id = #{schoolId}
         </if>
     </select>
+
+    <select id="selectListByGradeId" resultType="squadAO">
+        SELECT
+        B.wm_squad_id,
+        C.wm_school_id,
+        B.`name`,
+        C.wm_grade_id,
+        B.teacher_name,
+        B.teacher_mobile,
+        B.created_time
+        FROM wm_grade_squad AS A
+        INNER JOIN wm_squad AS B on A.wm_squad_id = B.wm_squad_id
+        INNER JOIN wm_grade AS C ON A.wm_grade_id = C.wm_grade_id
+        WHERE C.wm_grade_id = #{wmGradeId} AND B.`status` = 1 AND C.`status` = 1
+    </select>
 </mapper>

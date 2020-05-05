@@ -1,6 +1,10 @@
 package com.wmpay.bean;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
+
 public class WmPatriarchStudent {
+    @TableId(value = "wm_patriarch_student_id", type = IdType.AUTO)
     private Integer wmPatriarchStudentId;
 
     private Integer wmPatriarchId;

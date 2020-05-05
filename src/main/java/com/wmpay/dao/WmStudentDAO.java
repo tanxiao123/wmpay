@@ -1,11 +1,12 @@
 package com.wmpay.dao;
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.wmpay.bean.WmStudent;
 import com.wmpay.bean.WmStudentExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
-public interface WmStudentDAO {
+public interface WmStudentDAO extends BaseMapper<WmStudent> {
     long countByExample(WmStudentExample example);
 
     int deleteByExample(WmStudentExample example);

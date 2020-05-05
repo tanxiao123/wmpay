@@ -1,8 +1,6 @@
 <component name="libraryTable">
   <library name="weimaitools-1.1">
-    <CLASSES>
-      <root url="jar://$PROJECT_DIR$/src/main/webapp/WEB-INF/lib/weimaitools-1.1.jar!/" />
-    </CLASSES>
+    <CLASSES />
     <JAVADOC />
     <SOURCES />
   </library>

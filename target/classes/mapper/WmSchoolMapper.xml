@@ -57,4 +57,19 @@
         ORDER BY
             created_time DESC
     </select>
+
+    <select id="selectSchoolListApi" resultType="schoolAO">
+        SELECT
+            wm_school_id,
+            `name`,
+            parent_id
+        FROM
+            wm_school
+        WHERE
+            `status` = 1 AND wm_area_id = #{wmAreaId}
+
+        ORDER BY created_time ASC
+
+
+    </select>
 </mapper>

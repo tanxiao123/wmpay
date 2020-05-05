@@ -1,8 +1,13 @@
 package com.wmpay.bean;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
+
 import java.util.Date;
 
 public class WmPatriarch {
+
+    @TableId(value = "wm_patriarch_id", type = IdType.AUTO)
     private Integer wmPatriarchId;
 
     private Integer wmWechatId;
@@ -16,6 +21,8 @@ public class WmPatriarch {
     private Date updatedTime;
 
     private String status;
+
+    private String type;
 
     public Integer getWmPatriarchId() {
         return wmPatriarchId;
@@ -71,5 +78,13 @@ public class WmPatriarch {
 
     public void setStatus(String status) {
         this.status = status == null ? null : status.trim();
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }
