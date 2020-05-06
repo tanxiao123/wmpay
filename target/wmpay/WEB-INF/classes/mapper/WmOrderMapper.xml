@@ -31,6 +31,26 @@
                     AND A.wm_addition_admin_id = #{adminId}
                 </if>
     </select>
+    <select id="selectOrderListByPatriarchId" resultType="orderVO">
+        SELECT
+                A.wm_order_id,
+                B.`name` as wm_patriarch_name,
+                C.title as pay_type_name,
+                A.wm_patriarch_id,
+                A.wm_order_type_id,
+                A.out_trade_no,
+                A.transaction_id,
+                A.body,
+                A.total_fee,
+                A.spbill_create_ip,
+                A.created_time
+            FROM
+                wm_order AS A
+            INNER JOIN wm_patriarch AS B ON A.wm_patriarch_id = B.wm_patriarch_id
+            INNER JOIN wm_order_type AS C ON A.wm_order_type_id = C.wm_order_type_id
+            WHERE A.wm_patriarch_id = #{wmPatriarchId}
+
+    </select>
     <select id="getDayNumberStatistics" resultMap="dayNumberResultMap">
         call wm_day_number_statistics(#{mathTime}, #{days}, #{adminId})
     </select>

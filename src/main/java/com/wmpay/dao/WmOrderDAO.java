@@ -25,6 +25,8 @@ public interface WmOrderDAO extends BaseMapper<WmOrder> {
      */
     IPage<OrderVO> selectPageList(Page<WmOrder> page, @Param("adminId")Integer adminId);
 
+    List<OrderVO> selectOrderListByPatriarchId(@Param("wmPatriarchId")Integer wmPatriarchId);
+
     List<List<HashMap<String,Object>>> getDayNumberStatistics(@Param("mathTime")String mathTime, @Param("days")Integer days, @Param("adminId")Integer adminId);
 
     CakeStatisticsAO getStatisticsCake(@Param("days")String days, @Param("adminId")Integer adminId);

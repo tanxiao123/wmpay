@@ -41,18 +41,17 @@ public class WeChatController {
 
 	WechatOrderConfig orderConfig = new WechatOrderConfig();
 
-	@ResponseBody
-	@RequestMapping(value="/hello", method = RequestMethod.GET)
-	public String hello() {
-		return "HelloWorld";
-	}
-
 	public WeChatController() {
 		FileUtil.loadProperties("payment_config.properties");
 		weChatBaseConfig = new WeChatBaseConfig(FileUtil.getPropertiesValue("wechat.pay.appid"),
 				FileUtil.getPropertiesValue("wechat.pay.mchid"), FileUtil.getPropertiesValue("wechat.pay.secret"), FileUtil.getPropertiesValue("wechat.pay.paykey"));
 	}
 
+	/**
+	 * 根据Code获取
+	 * @param code
+	 * @return
+	 */
 	@ResponseBody
 	@RequestMapping(value="/getOpenIdUnionId", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
 	public ResponseBean getOpenIdUnionId(@RequestParam("code") String code) {
@@ -68,25 +67,7 @@ public class WeChatController {
 		return AppResponse.error(ResponseEnum.ERROR);
 	}
 
-	@ResponseBody
-	@RequestMapping(value="/doPay", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
-	public Msg doPay(String openId) {
 
-		payUtil.setWeChatBaseConfig(weChatBaseConfig);
-		String orderNum = GeneralTools.GetUniqueSerial("TEST");
-		orderConfig.setAppid(weChatBaseConfig.getAppId() );
-		orderConfig.setMch_id(weChatBaseConfig.getMchId() );
-		orderConfig.setBody("WEIXIN");
-		orderConfig.setNotify_url("http://localtion:8080/");
-		orderConfig.setOut_trade_no(orderNum);
-		orderConfig.setTrade_type(WeChatBaseConfig.TRADE_TYPE_JSAPI);
-		orderConfig.setOpenid(openId);
-		orderConfig.setTotal_fee(1);
-
-		ResponseBean bean = payUtil.createOrder(orderConfig);
-		HashMap<String, String> data = (HashMap<String, String>)bean.getData();
-		return bean.getStatus() == 1 ? Msg.success().add("data", data) : Msg.fail();
-	}
 
 	
 }

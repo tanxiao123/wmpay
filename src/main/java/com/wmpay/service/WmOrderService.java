@@ -38,6 +38,12 @@ public class WmOrderService {
                 adminId = admin.getWmAdditionAdminId();
         }
         return wmOrderDAO.selectPageList(new Page<WmOrder>(pageTools.getStart(), pageTools.getLength()), adminId);
+
+
+    }
+
+    public List<OrderVO> selectOrderByWmPatriarchId(Integer wmPatriarchId) {
+        return wmOrderDAO.selectOrderListByPatriarchId(wmPatriarchId);
     }
 
     public Boolean deleteOrder(Integer wmOrderId) {
