@@ -31,6 +31,8 @@ public class WmOrder {
 
     private String status;
 
+    private Integer wmStudentId;
+
     public Integer getWmOrderId() {
         return wmOrderId;
     }
@@ -125,5 +127,13 @@ public class WmOrder {
 
     public void setStatus(String status) {
         this.status = status == null ? null : status.trim();
+    }
+
+    public Integer getWmStudentId() {
+        return wmStudentId;
+    }
+
+    public void setWmStudentId(Integer wmStudentId) {
+        this.wmStudentId = wmStudentId;
     }
 }

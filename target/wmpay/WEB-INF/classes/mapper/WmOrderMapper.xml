@@ -31,6 +31,25 @@
                     AND A.wm_addition_admin_id = #{adminId}
                 </if>
     </select>
+
+    <select id="selectOrderDetail" resultType="detailOrderAO">
+        select
+            A.wm_order_id,
+            A.out_trade_no,
+            A.body,
+            A.total_fee,
+            A.created_time,
+            A.`status`,
+            B.wm_patriarch_id,
+            B.`name` as wm_patriarch_name,
+            A.wm_addition_admin_id,
+            D.`name` as wm_student_name
+            from wm_order AS A
+        INNER JOIN wm_patriarch AS B ON A.wm_patriarch_id = B.wm_patriarch_id
+        INNER JOIN wm_order_type AS C ON A.wm_order_type_id = C.wm_order_type_id
+        LEFT JOIN wm_student AS D ON A.wm_student_id = D.wm_student_id
+        WHERE A.wm_order_id = #{wmOrderId}
+    </select>
     <select id="selectOrderListByPatriarchId" resultType="orderVO">
         SELECT
                 A.wm_order_id,
@@ -43,7 +62,8 @@
                 A.body,
                 A.total_fee,
                 A.spbill_create_ip,
-                A.created_time
+                A.created_time,
+                A.status
             FROM
                 wm_order AS A
             INNER JOIN wm_patriarch AS B ON A.wm_patriarch_id = B.wm_patriarch_id

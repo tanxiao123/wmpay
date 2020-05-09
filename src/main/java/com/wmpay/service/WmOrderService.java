@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.wmpay.bean.AO.CakeStatisticsAO;
 import com.wmpay.bean.AO.DayNumberStatisticsAO;
+import com.wmpay.bean.AO.DetailOrderAO;
 import com.wmpay.bean.VO.OrderVO;
 import com.wmpay.bean.WmAdditionAdmin;
 import com.wmpay.bean.WmOrder;
@@ -38,8 +39,15 @@ public class WmOrderService {
                 adminId = admin.getWmAdditionAdminId();
         }
         return wmOrderDAO.selectPageList(new Page<WmOrder>(pageTools.getStart(), pageTools.getLength()), adminId);
+    }
 
-
+    /**
+     * 查询订单详细信息
+     * @param wmOrderId
+     * @return
+     */
+    public DetailOrderAO selectOrderDetail(Integer wmOrderId) {
+        return wmOrderDAO.selectOrderDetail(wmOrderId);
     }
 
     public List<OrderVO> selectOrderByWmPatriarchId(Integer wmPatriarchId) {

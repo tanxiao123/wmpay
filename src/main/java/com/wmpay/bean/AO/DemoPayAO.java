@@ -24,6 +24,7 @@ public class DemoPayAO {
     @NotNull(message = "所选用户ID不可为空")
     private Integer userId;
 
+
     public Integer getTotalFee() {
         return totalFee;
     }

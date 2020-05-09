@@ -37,6 +37,8 @@ public class OrderVO {
     // 创建时间
     private Date createdTime;
 
+    private String status;
+
     public Integer getWmOrderId() {
         return wmOrderId;
     }
@@ -123,5 +125,13 @@ public class OrderVO {
 
     public void setCreatedTime(Date createdTime) {
         this.createdTime = createdTime;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

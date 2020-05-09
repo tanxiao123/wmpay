@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.wmpay.bean.AO.CakeStatisticsAO;
 import com.wmpay.bean.AO.DayNumberStatisticsAO;
+import com.wmpay.bean.AO.DetailOrderAO;
 import com.wmpay.bean.VO.OrderVO;
 import com.wmpay.bean.WmOrder;
 import com.wmpay.bean.WmOrderExample;
@@ -30,4 +31,6 @@ public interface WmOrderDAO extends BaseMapper<WmOrder> {
     List<List<HashMap<String,Object>>> getDayNumberStatistics(@Param("mathTime")String mathTime, @Param("days")Integer days, @Param("adminId")Integer adminId);
 
     CakeStatisticsAO getStatisticsCake(@Param("days")String days, @Param("adminId")Integer adminId);
+
+    DetailOrderAO selectOrderDetail(@Param("wmOrderId") Integer wmOrderId);
 }

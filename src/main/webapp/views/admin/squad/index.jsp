@@ -91,12 +91,11 @@
     $(function(){
         // add-suqad-div
         // 设置管理员权限可添加操作
-        if ("<%=((AdminTypeEnum)request.getSession().getAttribute(AdminCommon.USER_TYPE)).code%>" == "2"){
-            if ("<%=((WmAdditionAdmin)request.getSession().getAttribute(AdminCommon.USER_SESSION)).getType()%>"  == "3"){
-                $("#add-suqad-div").hide();
-            }
-
-        }
+        <%--if ("<%=((AdminTypeEnum)request.getSession().getAttribute(AdminCommon.USER_TYPE)).code%>" == "2"){--%>
+        <%--    if ("<%=((WmAdditionAdmin)request.getSession().getAttribute(AdminCommon.USER_SESSION)).getType()%>"  == "3"){--%>
+        <%--        $("#add-suqad-div").hide();--%>
+        <%--    }--%>
+        <%--}--%>
         // 初始化表格信息
         var columns = [
             {data: 'wmSquadId',  sClass: 'center', render:function(data,type,row,meta){

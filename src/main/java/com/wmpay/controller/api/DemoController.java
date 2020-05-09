@@ -49,7 +49,7 @@ public class DemoController {
 
     WechatOrderConfig orderConfig = new WechatOrderConfig();
 
-    String host = "http://localhost:8000/api/wechat/jsapi";
+    String host = "http://api.weeok.cn/api/wechat/jsapi";
 
 
     DemoController () {
@@ -189,6 +189,7 @@ public class DemoController {
                 wmOrder.setWmOrderTypeId(1);
                 wmOrder.setTotalFee(totalFee);
                 wmOrder.setStatus("0");
+                wmOrder.setWmStudentId(wmStudentId);
                 wmOrderService.addOrder(wmOrder);
                 return AppResponse.success(responseObject);
             }
@@ -196,4 +197,5 @@ public class DemoController {
         }
         return responseBean;
     }
+
 }
